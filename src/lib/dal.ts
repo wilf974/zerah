@@ -1,6 +1,11 @@
 import 'server-only';
 import { cache } from 'react';
-import { getSession } from './session';
+import { getSession as getSessionFromCookie } from './session';
+
+/**
+ * DAL (Data Access Layer) - Récupère la session utilisateur
+ */
+export const getSession = getSessionFromCookie;
 
 /**
  * DAL (Data Access Layer) - Vérifie et retourne la session utilisateur
