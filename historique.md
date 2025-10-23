@@ -129,6 +129,30 @@
 **Prochaines étapes :**
 → Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
 
+## 📅 23 Octobre 2025 - Suppression des Références Open-Source ✅
+
+### Modifications
+**Fichiers modifiés :**
+- ✅ `README.md` - Suppression des badges MIT et mentions open-source
+- ✅ `src/app/login/page.tsx` - Modification du texte footer
+- ✅ `historique.md` - Mise à jour de la description projet
+
+**Changements apportés :**
+- ✅ Suppression du badge "License: MIT" du README
+- ✅ Suppression de la section "Licence MIT" 
+- ✅ Modification "Application gratuite et open-source" → "Application gratuite"
+- ✅ Mise à jour de la description projet dans historique.md
+- ✅ Conservation du statut "private: true" dans package.json
+
+**Motivation :**
+- Application repositionnée comme projet privé/gratuit
+- Suppression des références à l'open-source
+- Maintien de la gratuité et accessibilité
+- Conservation de la documentation complète
+
+**Prochaines étapes :**
+→ Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
+
 ## 📅 22 Octobre 2025 - Nommage du Projet 🎯
 **Projet nommé : ZERAH**
 - Zerah est le nom officiel de l'application
