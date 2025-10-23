@@ -421,6 +421,80 @@ curl -X POST http://localhost:2000/api/auth/send-otp \
   -d '{"email": "votre-email@gmail.com"}'
 ```
 
+## 🗄️ Troubleshooting Base de Données
+
+### Erreur : "The table `public.OTPCode` does not exist"
+
+1. **Vérifier l'état de la base de données :**
+```bash
+# Vérifier que PostgreSQL tourne
+docker-compose ps
+
+# Vérifier les logs de la base de données
+docker-compose logs db
+```
+
+2. **Exécuter les migrations Prisma :**
+```bash
+# Entrer dans le conteneur
+docker exec -it zerah-app sh
+
+# Vérifier l'état des migrations
+npx prisma migrate status
+
+# Appliquer les migrations
+npx prisma migrate deploy
+
+# Régénérer le client Prisma
+npx prisma generate
+
+# Vérifier que les tables existent
+npx prisma db push --accept-data-loss
+
+# Sortir du conteneur
+exit
+```
+
+3. **Redémarrer l'application :**
+```bash
+# Redémarrer l'application
+docker-compose restart app
+
+# Vérifier les logs
+docker-compose logs -f app
+```
+
+4. **Vérifier la base de données manuellement :**
+```bash
+# Se connecter à PostgreSQL
+docker exec -it zerah-db psql -U zerah_user -d zerah_db
+
+# Lister les tables
+\dt
+
+# Vérifier les données
+SELECT * FROM "OTPCode" LIMIT 5;
+SELECT * FROM "User" LIMIT 5;
+SELECT * FROM "Habit" LIMIT 5;
+
+# Sortir
+\q
+```
+
+### Si les tables n'existent pas
+
+```bash
+# Forcer la création des tables
+docker exec zerah-app npx prisma db push --force-reset
+
+# OU recréer complètement la base de données
+docker-compose down
+docker-compose up -d db
+sleep 15
+docker exec zerah-app npx prisma migrate deploy
+docker-compose up -d app
+```
+
 **Variables importantes pour la production :**
 
 ```env
