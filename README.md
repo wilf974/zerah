@@ -421,6 +421,26 @@ curl -X POST http://localhost:2000/api/auth/send-otp \
   -d '{"email": "votre-email@gmail.com"}'
 ```
 
+### Erreur : "no such service" dans Docker Compose
+
+```bash
+# Vérifier les services disponibles
+docker-compose ps
+
+# Lister les services dans docker-compose.yml
+docker-compose config --services
+
+# Si le service s'appelle "app", utiliser :
+docker-compose restart app
+
+# Si le service s'appelle autre chose, utiliser le bon nom :
+docker-compose restart [NOM_DU_SERVICE]
+
+# Vérifier dans le bon répertoire
+cd /opt/apps/zerah  # ou le dossier où est cloné le projet
+docker-compose ps
+```
+
 ## 🗄️ Troubleshooting Base de Données
 
 ### Erreur : "The table `public.OTPCode` does not exist"
