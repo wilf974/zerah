@@ -2,6 +2,10 @@
 
 Application web gratuite et open-source de suivi d'habitudes avec profil de santé personnalisé et recommandations intelligentes.
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-wilf974%2Fzerah-blue?style=flat&logo=github)](https://github.com/wilf974/zerah)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+
 ## 🚀 Fonctionnalités
 
 - ✅ **Suivi simple** : Cochez vos habitudes chaque jour
@@ -34,7 +38,7 @@ Application web gratuite et open-source de suivi d'habitudes avec profil de sant
 ### 1. Cloner le projet
 
 ```bash
-git clone <votre-repo>
+git clone https://github.com/wilf974/zerah.git
 cd zerah
 ```
 
@@ -182,8 +186,8 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 
 # 2. Cloner le projet
-git clone <votre-repo>
-cd habit-tracker
+git clone https://github.com/wilf974/zerah.git
+cd zerah
 
 # 3. Configurer .env (avec vraies valeurs SMTP)
 nano .env
