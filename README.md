@@ -6,6 +6,53 @@ Application web gratuite de suivi d'habitudes avec profil de santé personnalis�
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 [![Deploy](https://img.shields.io/badge/Deploy-VPS%20HTTPS-green.svg)](https://github.com/wilf974/zerah#déploiement-en-production)
 
+## 🔐 Conformité RGPD
+
+Zerah est **100% conforme RGPD**. Tous les droits des utilisateurs sont implémentés :
+
+### Droits garantis
+
+- ✅ **Art. 15** - Droit d'accès : `/settings` → Exporter mes données
+- ✅ **Art. 16** - Rectification : Modifiez votre profil directement
+- ✅ **Art. 17** - Droit à l'oubli : `/settings` → Supprimer mon compte (30j)
+- ✅ **Art. 20** - Portabilité : Export JSON complet de vos données
+- ✅ **Art. 21** - Opposition : Gérez vos consentements cookies
+
+### Pages légales
+
+- 🔐 [Politique de Confidentialité](/privacy) - Détail complet RGPD
+- ⚖️ [Conditions d'Utilisation](/terms) - Conditions légales
+- 📖 [Documentation RGPD](./RGPD.md) - Conformité détaillée
+
+### Gestion des données
+
+**Données ne concerne que l'utilisateur** :
+- ✅ Isolation complète par utilisateur
+- ✅ Aucun partage avec tiers (sauf email SMTP)
+- ✅ Rétention : 30 jours après suppression demandée
+- ✅ Soft delete + période de grâce de 30 jours
+- ✅ Suppression définitive automatisée via cron
+
+### Consentements
+
+À la première visite, un banneau propose :
+- 🍪 Accepter tout / Refuser tout / Personnaliser
+- 📊 Cookies analytiques (optionnel)
+- 📢 Cookies marketing (optionnel)
+- 🔒 Cookies essentiels (obligatoires, non consentis)
+
+Modifiez vos choix anytime via `/settings` → Gérer les consentements
+
+### Sécurité
+
+- ✅ HTTPS/TLS 1.3 en transit
+- ✅ JWT chiffré pour sessions
+- ✅ Authentification OTP (pas de mot de passe)
+- ✅ HTTP-only cookies (protection XSS)
+- ✅ PostgreSQL sur VPS Europe
+
+---
+
 ## 🚀 Fonctionnalités
 
 - ✅ **Suivi simple** : Cochez vos habitudes chaque jour
