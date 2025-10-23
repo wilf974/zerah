@@ -93,6 +93,42 @@
 **Prochaines étapes :**
 → Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
 
+## 📅 23 Octobre 2025 - Script de Déploiement Production ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `deploy.sh` - Script de déploiement automatique complet
+- ✅ `README.md` - Guide d'installation depuis GitHub
+- ✅ `docker-compose.yml` - Optimisation des ports de production
+- ✅ Configuration Nginx avec SSL Let's Encrypt
+
+**Fonctionnalités ajoutées :**
+- ✅ **Déploiement en une commande** : `sudo bash deploy.sh`
+- ✅ **Installation automatique** : Docker, Docker Compose, Nginx, SSL
+- ✅ **Configuration sécurisée** : Génération automatique des clés
+- ✅ **Configuration SMTP** : Guide pour Gmail et autres providers
+- ✅ **Firewall UFW** : Configuration automatique de la sécurité
+- ✅ **Monitoring intégré** : Logs et status des services
+
+**Workflow de déploiement :**
+1. Clonage du repository GitHub
+2. Exécution du script `deploy.sh`
+3. Configuration automatique (Docker, Nginx, SSL, firewall)
+4. Génération des clés de sécurité
+5. Déploiement et migrations Prisma
+6. Application accessible en HTTPS
+
+**Script de déploiement inclut :**
+- Installation complète de l'environnement
+- Configuration Nginx avec reverse proxy
+- Certificat SSL Let's Encrypt automatique
+- Variables d'environnement sécurisées
+- Migrations de base de données
+- Configuration du firewall
+
+**Prochaines étapes :**
+→ Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
+
 ## 📅 22 Octobre 2025 - Nommage du Projet 🎯
 **Projet nommé : ZERAH**
 - Zerah est le nom officiel de l'application

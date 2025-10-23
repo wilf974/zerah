@@ -38,8 +38,56 @@ Application web gratuite et open-source de suivi d'habitudes avec profil de sant
 ### 1. Cloner le projet
 
 ```bash
+# Cloner depuis GitHub
 git clone https://github.com/wilf974/zerah.git
 cd zerah
+
+# Vérifier que tous les fichiers sont présents
+ls -la
+```
+
+### 2. Configuration Automatisée (Recommandé)
+
+Pour un déploiement rapide, utilisez le script automatisé :
+
+```bash
+# Télécharger le script de déploiement
+wget https://raw.githubusercontent.com/wilf974/zerah/master/deploy.sh
+
+# Rendre le script exécutable
+chmod +x deploy.sh
+
+# Exécuter le déploiement automatique
+sudo bash deploy.sh
+```
+
+Le script va automatiquement :
+- ✅ Installer Docker et Docker Compose
+- ✅ Configurer Nginx avec SSL (Let's Encrypt)
+- ✅ Générer les clés de sécurité
+- ✅ Configurer les variables d'environnement
+- ✅ Démarrer l'application
+- ✅ Configurer le firewall
+
+### 3. Configuration Manuelle (Alternative)
+
+```bash
+# Copier et configurer les variables d'environnement
+cp .env.example .env
+nano .env  # Configurer vos vraies valeurs SMTP
+
+# Démarrer les services
+docker-compose up -d
+
+# Attendre PostgreSQL
+sleep 15
+
+# Migrations
+docker exec zerah-app npx prisma migrate deploy
+docker exec zerah-app npx prisma generate
+
+# Redémarrer l'application
+docker-compose restart app
 ```
 
 ### 2. Configuration
@@ -178,26 +226,243 @@ habit-tracker/
 
 ## 🚢 Déploiement en Production
 
-### Sur VPS Debian
+### Sur VPS Debian/Ubuntu avec HTTPS
+
+#### 1. Configuration Système de Base
 
 ```bash
-# 1. Installer Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
+# Mettre à jour le système
+sudo apt update && sudo apt upgrade -y
 
-# 2. Cloner le projet
+# Installer les outils de base
+sudo apt install -y curl wget git nano ufw
+
+# Installer Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Installer Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Redémarrer la session
+newgrp docker
+```
+
+#### 2. Configuration DNS
+
+```bash
+# Ajouter l'enregistrement A dans votre zone DNS :
+# zerah.woutils.com → VOTRE_IP_VPS
+
+# Vérifier la propagation DNS
+nslookup zerah.woutils.com
+```
+
+#### 3. Installation de l'Application
+
+```bash
+# Cloner le repository
 git clone https://github.com/wilf974/zerah.git
 cd zerah
 
-# 3. Configurer .env (avec vraies valeurs SMTP)
+# Configurer les variables d'environnement
 nano .env
+```
 
-# 4. Démarrer
+#### 4. Configuration .env
+
+Créez le fichier `.env` avec la configuration suivante :
+
+```bash
+# Créer le fichier .env
+nano .env
+```
+
+**Configuration recommandée pour la production :**
+
+```env
+# Base de données (générée automatiquement par le script)
+DATABASE_URL="postgresql://zerah_user:STRONG_PASSWORD@localhost:10001/zerah_db?schema=public"
+
+# Sécurité (générée automatiquement)
+SESSION_SECRET="your-super-secret-session-key-min-32-chars"
+
+# Configuration SMTP OBLIGATOIRE (pour l'authentification OTP)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="votre-email@gmail.com"
+SMTP_PASS="votre-mot-de-passe-application-gmail"
+SMTP_FROM="Zerah <votre-email@gmail.com>"
+
+# URL de production
+NEXT_PUBLIC_APP_URL="https://zerah.woutils.com"
+```
+
+**Variables importantes pour la production :**
+
+```env
+# Base de données
+DATABASE_URL="postgresql://zerah_user:STRONG_PASSWORD@localhost:10001/zerah_db?schema=public"
+
+# Sessions (générer une clé forte)
+SESSION_SECRET="your-super-secret-session-key-min-32-chars"
+
+# Email SMTP (obligatoire pour l'authentification OTP)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="votre-email@gmail.com"
+SMTP_PASS="votre-mot-de-passe-application"
+SMTP_FROM="Zerah <votre-email@gmail.com>"
+
+# URLs de production
+NEXT_PUBLIC_APP_URL="https://zerah.woutils.com"
+```
+
+#### 5. Configuration HTTPS avec Nginx
+
+```bash
+# Installer Nginx et Certbot
+sudo apt install -y nginx certbot python3-certbot-nginx
+
+# Configurer Nginx
+sudo nano /etc/nginx/sites-available/zerah
+```
+
+**Configuration Nginx :**
+
+```nginx
+server {
+    listen 80;
+    server_name zerah.woutils.com;
+
+    # Redirection HTTP vers HTTPS
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name zerah.woutils.com;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/zerah.woutils.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/zerah.woutils.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    # Headers de sécurité
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
+
+    # Proxy vers l'application Docker
+    location / {
+        proxy_pass http://localhost:2000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+```bash
+# Activer le site
+sudo ln -s /etc/nginx/sites-available/zerah /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+
+# Obtenir le certificat SSL
+sudo certbot --nginx -d zerah.woutils.com
+
+# Configurer le renouvellement automatique
+sudo systemctl enable certbot.timer
+```
+
+#### 6. Configuration Docker
+
+```bash
+# Modifier les ports dans docker-compose.yml si nécessaire
+nano docker-compose.yml
+```
+
+**Ports de production :**
+```yaml
+services:
+  db:
+    ports:
+      - "10001:5432"  # PostgreSQL sur port externe
+  app:
+    ports:
+      - "2000:3000"   # Next.js sur port interne
+```
+
+#### 7. Démarrage de l'Application
+
+```bash
+# Démarrer les services
 docker-compose up -d
 
-# 5. Migrations
-docker exec -it habit-tracker-app sh
+# Attendre que PostgreSQL démarre
+sleep 10
+
+# Entrer dans le conteneur pour les migrations
+docker exec -it zerah-app sh
+
+# À l'intérieur du conteneur :
 npx prisma migrate deploy
+npx prisma generate
+exit
+
+# Redémarrer l'application
+docker-compose restart app
+```
+
+#### 8. Configuration du Firewall
+
+```bash
+# Configurer UFW
+sudo ufw allow ssh
+sudo ufw allow 'Nginx Full'
+sudo ufw --force enable
+
+# Vérifier le statut
+sudo ufw status
+```
+
+#### 9. Monitoring et Logs
+
+```bash
+# Vérifier les logs
+docker-compose logs -f app
+docker-compose logs -f db
+
+# Vérifier l'état des services
+docker-compose ps
+
+# Redémarrer si nécessaire
+docker-compose restart
+```
+
+#### 10. Maintenance
+
+```bash
+# Mettre à jour l'application
+git pull origin master
+docker-compose up -d --build
+
+# Sauvegarde de la base de données
+docker exec zerah-db pg_dump -U zerah_user zerah_db > backup_zerah_$(date +%Y%m%d).sql
+
+# Renouvellement SSL automatique (déjà configuré avec certbot)
+sudo certbot renew --dry-run
 ```
 
 ### Ports
