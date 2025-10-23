@@ -681,7 +681,7 @@ docker-compose restart
 #### 10. Maintenance
 
 ```bash
-# Mettre à jour l'application
+# Mettre à jour l'application depuis GitHub
 git pull origin master
 docker-compose up -d --build
 
@@ -690,6 +690,38 @@ docker exec zerah-db pg_dump -U zerah_user zerah_db > backup_zerah_$(date +%Y%m%
 
 # Renouvellement SSL automatique (déjà configuré avec certbot)
 sudo certbot renew --dry-run
+```
+
+#### 11. Mise à Jour depuis GitHub
+
+**Commandes complètes pour mettre à jour depuis le VPS :**
+
+```bash
+# 1. Se connecter au VPS
+ssh root@votre-ip-vps
+
+# 2. Aller dans le dossier de l'application
+cd /opt/apps/zerah
+
+# 3. Récupérer les dernières modifications
+git pull origin master
+
+# 4. Redémarrer l'application avec rebuild
+docker-compose up -d --build
+
+# 5. Attendre que l'application redémarre
+sleep 30
+
+# 6. Vérifier les logs
+docker-compose logs -f app
+
+# 7. Test de l'application
+curl -I https://zerah.woutils.com
+```
+
+**Commande complète en une ligne :**
+```bash
+ssh root@votre-ip-vps "cd /opt/apps/zerah && git pull origin master && docker-compose up -d --build && sleep 30 && docker-compose logs app | tail -10"
 ```
 
 ### Ports
