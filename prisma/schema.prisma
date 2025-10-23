@@ -1,0 +1,99 @@
+// Schéma Prisma pour Habit Tracker
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  habits    Habit[]
+  sessions  Session[]
+  otpCodes  OTPCode[]
+  
+  // Profil étendu pour recommandations intelligentes
+  activityLevel  String?   // "sedentaire", "modere", "actif", "tres_actif"
+  height         Int?      // Taille en cm
+  weight         Int?      // Poids en kg
+  gender         String?   // "homme", "femme", "autre"
+  age            Int?      // Âge en années
+  profileUpdated DateTime?
+}
+
+model OTPCode {
+  id        Int      @id @default(autoincrement())
+  code      String
+  email     String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Habit {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  icon        String?
+  color       String?
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now())
+  entries     HabitEntry[]
+  details     HabitDetail[] // Champs personnalisés (ml, durée, etc.)
+}
+
+model HabitDetail {
+  id        Int     @id @default(autoincrement())
+  habitId   Int
+  habit     Habit   @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  name      String  // Ex: "ml", "durée (min)", "km"
+  type      String  // "number", "duration", "distance"
+  unit      String? // Ex: "ml", "min", "km"
+  values    HabitEntryValue[] // Relation inverse
+  createdAt DateTime @default(now())
+
+  @@unique([habitId, name])
+}
+
+model HabitEntry {
+  id        Int      @id @default(autoincrement())
+  habitId   Int
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  completed Boolean  @default(true)
+  note      String?
+  values    HabitEntryValue[] // Valeurs des détails personnalisés
+  createdAt DateTime @default(now())
+
+  @@unique([habitId, date])
+}
+
+model HabitEntryValue {
+  id          Int        @id @default(autoincrement())
+  entryId     Int
+  entry       HabitEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  detailId    Int
+  detail      HabitDetail @relation(fields: [detailId], references: [id], onDelete: Cascade)
+  value       Float      // Stocke la valeur numérique
+  createdAt   DateTime   @default(now())
+
+  @@unique([entryId, detailId])
+}
+

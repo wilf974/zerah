@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zerah-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zerahuser
+      POSTGRES_PASSWORD: zerahpass
+      POSTGRES_DB: zerahdb
+    ports:
+      - "10001:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - zerah-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zerah-app
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://zerahuser:zerahpass@postgres:5432/zerahdb
+      NODE_ENV: production
+    ports:
+      - "2000:2000"
+    networks:
+      - zerah-network
+
+volumes:
+  postgres_data:
+
+networks:
+  zerah-network:
+    driver: bridge
+
