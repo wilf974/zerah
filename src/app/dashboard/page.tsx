@@ -237,6 +237,11 @@ export default function DashboardPage() {
                   Profil →
                 </button>
               </Link>
+              <Link href="/settings">
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium">
+                  🔐 Confidentialité →
+                </button>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium"
