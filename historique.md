@@ -153,6 +153,205 @@
 **Prochaines étapes :**
 → Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
 
+## 📅 23 Octobre 2025 - Conformité RGPD Complète ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `prisma/schema.prisma` - Ajout champs RGPD au modèle User
+- ✅ `src/app/privacy/page.tsx` - Page Politique de Confidentialité complète
+- ✅ `src/app/terms/page.tsx` - Page Conditions d'Utilisation
+- ✅ `src/app/settings/page.tsx` - Dashboard Confidentialité & RGPD
+- ✅ `src/components/ConsentBanner.tsx` - Banneau consentement cookies
+- ✅ `src/app/api/auth/consent/route.ts` - API gestion consentements
+- ✅ `src/app/api/auth/export-data/route.ts` - API export données (Art. 20)
+- ✅ `src/app/api/auth/delete-account/route.ts` - API suppression compte (Art. 17)
+- ✅ `scripts/cleanup-deleted-accounts.js` - Script nettoyage automatisé
+- ✅ `RGPD.md` - Documentation complète RGPD
+- ✅ `src/components/RootClientWrapper.tsx` - Intégration ConsentBanner
+
+### Fonctionnalités RGPD implémentées
+
+#### 1. Champs de données RGPD
+- ✅ `consentAnalytics` - Consentement analytics
+- ✅ `consentMarketing` - Consentement marketing
+- ✅ `consentCookies` - Consentement cookies
+- ✅ `consentUpdatedAt` - Date mise à jour consentements
+- ✅ `dataExportedAt` - Date dernier export
+- ✅ `deletionRequestedAt` - Date demande suppression
+- ✅ `deletionScheduledFor` - Date suppression programmée (30j)
+- ✅ `isDeleted` - Flag soft delete
+
+#### 2. Pages légales
+- ✅ **Politique de Confidentialité** (`/privacy`)
+  - Détail données collectées
+  - Bases légales de traitement
+  - Droits RGPD (Art. 15-21)
+  - Sécurité et mesures
+  - Rétention des données
+  - Contacts et réclamations
+
+- ✅ **Conditions d'Utilisation** (`/terms`)
+  - Acceptation des conditions
+  - Restrictions d'utilisation
+  - Propriété intellectuelle
+  - Limitation de responsabilité
+  - Résiliation de compte
+  - Loi applicable
+
+#### 3. Gestion des consentements
+- ✅ **ConsentBanner** - Banneau automatique à première visite
+  - Vue simple (Accepter tout / Refuser / Paramètres)
+  - Vue détaillée (Choix granulaires)
+  - Stockage local + base de données
+  - Dark mode compatible
+
+- ✅ **API /api/auth/consent**
+  - GET : Récupérer consentements utilisateur
+  - POST : Mettre à jour consentements
+  - Vérification authenticité utilisateur
+  - Isolation des données
+
+#### 4. Droit à l'oubli (Art. 17)
+- ✅ **API /api/auth/delete-account**
+  - POST : Demander suppression (soft delete)
+  - GET : Récupérer statut suppression
+  - DELETE : Annuler suppression (30j)
+  - Période de grâce automatique 30 jours
+
+- ✅ **Processus complet**
+  - Jour 0 : Demande de suppression
+  - Jours 1-29 : Données conservées, compte inaccessible
+  - Jour 30 : Suppression définitive (cron job)
+  - Utilisateur peut annuler avant suppression définitive
+
+#### 5. Portabilité des données (Art. 20)
+- ✅ **API /api/auth/export-data**
+  - Téléchargement JSON complet
+  - Inclut : profil, habitudes, entrées, statistiques
+  - Métadonnées RGPD
+  - Date de dernier export enregistrée
+
+- ✅ **Format export**
+  ```json
+  {
+    "exportDate": "ISO 8601",
+    "user": { "id", "email", "profil_santé", "consentements" },
+    "habits": [ { "détails", "entrées", "valeurs" } ],
+    "sessions": [ { "id", "dates" } ],
+    "metadata": { "rgpdCompliant": true }
+  }
+  ```
+
+#### 6. Dashboard Confidentialité (/settings)
+- ✅ **Sections principales**
+  - 📥 Exporter mes données (download JSON)
+  - 🍪 Gérer les consentements (réafficher banneau)
+  - 🗑️ Supprimer mon compte (avec confirmation)
+  - 📄 Documents légaux (liens vers pages)
+
+- ✅ **Protection utilisateur**
+  - Confirmation en tapant "OUI"
+  - Affichage date suppression programmée
+  - Option annulation durant 30j
+  - Interface sombre/clair
+  - Toasts de confirmation
+
+#### 7. Scripts de maintenance
+- ✅ **cleanup-deleted-accounts.js**
+  - Exécution quotidienne (cron job)
+  - Recherche comptes programmés
+  - Suppression en cascade (Prisma)
+  - Logs d'exécution détaillés
+  - Gestion erreurs robuste
+
+#### 8. Documentation RGPD
+- ✅ **RGPD.md** complet (20 sections)
+  - Vue d'ensemble principes RGPD
+  - Détail données collectées
+  - Droits utilisateurs (Art. 15-21)
+  - Mesures sécurité (HTTPS, chiffrage, auth)
+  - Rétention données
+  - APIs et endpoints RGPD
+  - Consentement et cookies
+  - Procédures et contacts
+  - Tableau conformité
+  - Checklist audit
+  - Maintenance cron jobs
+
+### Sécurité RGPD
+
+**Isolation des données :**
+- ✅ Chaque utilisateur ne peut accéder qu'à ses propres données
+- ✅ Vérification `session.userId === data.userId` systématique
+- ✅ Pas d'accès cross-user possible
+
+**APIs sécurisées :**
+- ✅ Authentification JWT requise
+- ✅ Validation des entrées stricte
+- ✅ Gestion erreurs appropriée (401, 403, 404)
+- ✅ Rate limiting recommandé
+
+**Chiffrage :**
+- ✅ HTTPS/TLS en transit
+- ✅ JWT chiffré pour sessions
+- ✅ PostgreSQL sur volume persistant
+- ✅ Cookies HTTP-only et Secure
+
+### Conformité complète
+
+| Article RGPD | Exigence | Implémentation | Statut |
+|--------------|----------|-----------------|--------|
+| Art. 13-14 | Information | Politique + banneau | ✅ |
+| Art. 15 | Droit d'accès | `/api/auth/export-data` | ✅ |
+| Art. 16 | Rectification | Interface profil | ✅ |
+| Art. 17 | Oubli | `/api/auth/delete-account` | ✅ |
+| Art. 20 | Portabilité | Export JSON | ✅ |
+| Art. 21 | Opposition | Gestion consentements | ✅ |
+| Art. 32 | Sécurité | HTTPS + chiffrage | ✅ |
+
+### Configuration cron jobs (sur VPS)
+
+À ajouter au `/etc/crontab` du VPS :
+
+```bash
+# Suppression comptes programmés (quotidien à minuit)
+0 0 * * * cd /opt/apps/zerah && node scripts/cleanup-deleted-accounts.js
+
+# Nettoyage sessions expirées (hebdomadaire)
+0 2 * * 0 cd /opt/apps/zerah && npx prisma db execute "DELETE FROM \"Session\" WHERE \"expiresAt\" < NOW()"
+
+# Nettoyage OTP expirés (quotidien)
+0 */6 * * * cd /opt/apps/zerah && npx prisma db execute "DELETE FROM \"OTPCode\" WHERE \"expiresAt\" < NOW()"
+```
+
+### Workflow utilisateur RGPD
+
+**Exercer ses droits :**
+1. Login → Paramètres → Confidentialité
+2. Choisir action (export/suppression/consentements)
+3. Confirmer l'action
+4. Recevoir email confirmation
+5. Données traitées (immédiat ou dans 30j)
+
+**Consentements :**
+1. Première visite → Banneau automatique
+2. Accepter/Refuser/Personnaliser
+3. Choix enregistré en local + DB
+4. Modifiable via Paramètres → Consentements
+
+**Suppression sécurisée :**
+1. Demande → Confirmer (tapez "OUI")
+2. Soft delete + notification email
+3. 30 jours pour changer d'avis
+4. Suppression définitive automatique (jour 30)
+
+### Prochaines étapes
+
+→ Déployer sur VPS avec cron jobs configurés
+→ Phase 4 : Social & Communauté (avec contrôles RGPD)
+
+---
+
 ## 📅 23 Octobre 2025 - Guide de Mise à Jour VPS & Maintenance ✅
 
 ### Modifications
