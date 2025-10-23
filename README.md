@@ -357,6 +357,70 @@ SMTP_USER="votre-email@votre-domaine.com"
 SMTP_PASS="votre-mot-de-passe-email"
 ```
 
+## 🔧 Troubleshooting SMTP
+
+### Erreur : "Erreur lors de l'envoi du code"
+
+1. **Vérifiez les logs de l'application :**
+```bash
+docker-compose logs -f app
+```
+
+2. **Testez la configuration SMTP :**
+```bash
+# Test SMTP avec telnet
+telnet smtp.gmail.com 587
+
+# Ou test avec curl
+curl -v smtp://smtp.gmail.com:587 --mail-from votre-email@gmail.com --mail-rcpt destinataire@gmail.com
+```
+
+3. **Vérifications Gmail :**
+   - ✅ Validation en 2 étapes activée
+   - ✅ Mot de passe d'application généré
+   - ✅ Moins de sécurité autorisée (si nécessaire)
+
+4. **Test d'envoi manuel :**
+```bash
+# Entrer dans le conteneur
+docker exec -it zerah-app sh
+
+# Test Node.js SMTP
+node -e "
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransporter({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: 'smtp.habittracker@gmail.com',
+    pass: 'ywdvnkazuuwwvqvj'
+  }
+});
+transporter.sendMail({
+  from: 'Zerah <smtp.habittracker@gmail.com>',
+  to: 'test@gmail.com',
+  subject: 'Test Zerah',
+  text: 'Test d\\'envoi d\\'email'
+}).then(() => console.log('Email envoyé')).catch(console.error);
+"
+```
+
+### Redémarrage après configuration SMTP
+
+```bash
+# Redémarrer l'application
+docker-compose restart app
+
+# Vérifier les logs
+docker-compose logs -f app
+
+# Test de l'API SMTP
+curl -X POST http://localhost:2000/api/auth/send-otp \
+  -H "Content-Type: application/json" \
+  -d '{"email": "votre-email@gmail.com"}'
+```
+
 **Variables importantes pour la production :**
 
 ```env
