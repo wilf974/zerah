@@ -153,6 +153,38 @@
 **Prochaines étapes :**
 → Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
 
+## 📅 23 Octobre 2025 - Guide de Mise à Jour VPS & Maintenance ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `README.md` - Ajout du guide de mise à jour VPS complet
+- ✅ Documentation des commandes de maintenance production
+- ✅ Script de déploiement automatique avec SSL
+- ✅ Procédures de sauvegarde et renouvellement SSL
+
+**Fonctionnalités ajoutées :**
+- ✅ **Mise à jour en une commande** depuis GitHub
+- ✅ **Commande complète** pour déploiement automatisé
+- ✅ **Guide de troubleshooting** Docker Compose
+- ✅ **Procédures de maintenance** production
+- ✅ **Sauvegarde automatique** de la base de données
+- ✅ **Renouvellement SSL** Let's Encrypt automatique
+
+**Workflow de mise à jour :**
+1. Connexion SSH au VPS
+2. Navigation vers le dossier de l'application
+3. Pull des modifications depuis GitHub
+4. Rebuild et redémarrage des services Docker
+5. Vérification des logs et tests
+
+**Commande de mise à jour complète :**
+```bash
+ssh root@votre-ip-vps "cd /opt/apps/zerah && git pull origin master && docker-compose up -d --build && sleep 30 && docker-compose logs app | tail -10"
+```
+
+**Prochaines étapes :**
+→ Phase 4 : Social & Communauté (système d'amis, défis, leaderboard)
+
 ## 📅 22 Octobre 2025 - Nommage du Projet 🎯
 **Projet nommé : ZERAH**
 - Zerah est le nom officiel de l'application
