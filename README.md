@@ -495,6 +495,19 @@ docker exec zerah-app npx prisma migrate deploy
 docker-compose up -d app
 ```
 
+### Erreur : "EACCES: permission denied" lors de la génération Prisma
+
+```bash
+# Corriger les permissions (si erreur de permissions)
+docker exec zerah-app chown -R nextjs:nodejs /app/node_modules/.prisma
+
+# OU utiliser sudo dans le conteneur
+docker exec zerah-app sh -c 'chmod -R 755 /app/node_modules/.prisma && npx prisma generate'
+
+# Redémarrer l'application après correction
+docker-compose restart app
+```
+
 **Variables importantes pour la production :**
 
 ```env
