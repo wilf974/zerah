@@ -243,7 +243,7 @@
 ## 📅 22 Octobre 2025 - Création du MVP
 
 ### Contexte
-Création d'une application web de suivi d'habitudes (habit tracker) open-source et gratuite. L'objectif est de fournir une solution simple, efficace et auto-hébergeable pour aider les utilisateurs à développer de meilleures habitudes quotidiennes.
+Création d'une application web de suivi d'habitudes (habit tracker) gratuite. L'objectif est de fournir une solution simple, efficace et auto-hébergeable pour aider les utilisateurs à développer de meilleures habitudes quotidiennes.
 
 ### Architecture Technique Choisie
 

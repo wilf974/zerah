@@ -195,7 +195,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center mt-4 text-white text-sm">
-          <p>Application gratuite et open-source</p>
+          <p>Application gratuite</p>
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 # 🎯 Zerah - Suivi d'Habitudes Personnalisé
 
-Application web gratuite et open-source de suivi d'habitudes avec profil de santé personnalisé et recommandations intelligentes.
+Application web gratuite de suivi d'habitudes avec profil de santé personnalisé et recommandations intelligentes.
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-wilf974%2Fzerah-blue?style=flat&logo=github)](https://github.com/wilf974/zerah)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 [![Deploy](https://img.shields.io/badge/Deploy-VPS%20HTTPS-green.svg)](https://github.com/wilf974/zerah#déploiement-en-production)
 
@@ -700,15 +699,11 @@ sudo certbot renew --dry-run
 
 ## 🤝 Contribution
 
-Ce projet est open-source et gratuit. Les contributions sont les bienvenues !
+Ce projet est gratuit. Les contributions sont les bienvenues !
 
 ## ❤️ Soutien
 
 Si vous aimez ce projet, vous pouvez le soutenir via PayPal : [Lien PayPal]
-
-## 📝 Licence
-
-MIT License - Libre d'utilisation
 
 ## 🎯 Roadmap (Extensions futures)
 
