@@ -312,6 +312,51 @@ SMTP_FROM="Zerah <votre-email@gmail.com>"
 NEXT_PUBLIC_APP_URL="https://zerah.woutils.com"
 ```
 
+## 📧 Configuration SMTP pour l'Authentification OTP
+
+### Gmail (Recommandé)
+
+1. **Activez la validation en deux étapes** sur votre compte Gmail
+2. **Générez un mot de passe d'application** :
+   - Allez sur https://myaccount.google.com/apppasswords
+   - Créez un mot de passe pour "Zerah Habit Tracker"
+   - Utilisez ce mot de passe dans `SMTP_PASS`
+
+3. **Variables d'environnement pour Gmail :**
+```env
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="jean.maillot14@gmail.com"
+SMTP_PASS="votre-mot-de-passe-application-16-caracteres"
+SMTP_FROM="Zerah <jean.maillot14@gmail.com>"
+```
+
+### Autres Providers SMTP
+
+**Outlook/Hotmail :**
+```env
+SMTP_HOST="smtp-mail.outlook.com"
+SMTP_PORT="587"
+SMTP_USER="votre-email@outlook.com"
+SMTP_PASS="votre-mot-de-passe"
+```
+
+**Yahoo :**
+```env
+SMTP_HOST="smtp.mail.yahoo.com"
+SMTP_PORT="587"
+SMTP_USER="votre-email@yahoo.com"
+SMTP_PASS="votre-mot-de-passe-application"
+```
+
+**OVH/Email Pro :**
+```env
+SMTP_HOST="ssl0.ovh.net"
+SMTP_PORT="465"
+SMTP_USER="votre-email@votre-domaine.com"
+SMTP_PASS="votre-mot-de-passe-email"
+```
+
 **Variables importantes pour la production :**
 
 ```env
