@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 export const dynamic = 'force-dynamic';
 
 export const metadata = {

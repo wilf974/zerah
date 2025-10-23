@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
@@ -29,9 +30,9 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold mb-4">2. Données Personnelles Collectées</h2>
             <p className="mb-4">Nous collectons les données suivantes :</p>
             <ul className="list-disc list-inside space-y-2">
-              <li><strong>Données d'identification :</strong> Email, nom (optionnel)</li>
-              <li><strong>Profil de santé :</strong> Taille, poids, âge, sexe, niveau d'activité</li>
-              <li><strong>Données d'habitudes :</strong> Habitudes créées, entrées, statistiques</li>
+              <li><strong>Données d&apos;identification :</strong> Email, nom (optionnel)</li>
+              <li><strong>Profil de santé :</strong> Taille, poids, âge, sexe, niveau d&apos;activité</li>
+              <li><strong>Données d&apos;habitudes :</strong> Habitudes créées, entrées, statistiques</li>
               <li><strong>Données techniques :</strong> Adresse IP, cookies, agent utilisateur</li>
               <li><strong>Consentements :</strong> Vos préférences de consentement</li>
             </ul>
