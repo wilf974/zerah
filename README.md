@@ -5,6 +5,7 @@ Application web gratuite et open-source de suivi d'habitudes avec profil de sant
 [![GitHub Repository](https://img.shields.io/badge/GitHub-wilf974%2Fzerah-blue?style=flat&logo=github)](https://github.com/wilf974/zerah)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Deploy](https://img.shields.io/badge/Deploy-VPS%20HTTPS-green.svg)](https://github.com/wilf974/zerah#déploiement-en-production)
 
 ## 🚀 Fonctionnalités
 
@@ -18,6 +19,17 @@ Application web gratuite et open-source de suivi d'habitudes avec profil de sant
 - 💡 **Insights IA** : Meilleurs jours, tendances, suggestions personnalisées
 - 📥 **Export de Données** : CSV, JSON, PDF pour analyse et sauvegarde
 - 🎯 **Suggestions Intelligentes** : Recommandations adaptées à votre profil de santé
+- 🚀 **Déploiement Production** : Script automatisé avec HTTPS et SSL
+
+## ⚡ Déploiement Rapide
+
+```bash
+# Cloner et déployer en une commande
+git clone https://github.com/wilf974/zerah.git && cd zerah
+sudo bash deploy.sh  # Déploiement automatique avec HTTPS
+```
+
+**L'application sera accessible sur https://zerah.woutils.com**
 
 ## 🛠️ Stack Technique
 
