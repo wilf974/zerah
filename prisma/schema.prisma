@@ -25,6 +25,18 @@ model User {
   gender         String?   // "homme", "femme", "autre"
   age            Int?      // Âge en années
   profileUpdated DateTime?
+  
+  // RGPD Consent Management
+  consentAnalytics   Boolean  @default(false)  // Consentement pour analytics
+  consentMarketing   Boolean  @default(false)  // Consentement pour emails marketing
+  consentCookies     Boolean  @default(false)  // Consentement pour cookies
+  consentUpdatedAt   DateTime?                 // Date de mise à jour des consentements
+  
+  // Data Retention & Privacy
+  dataExportedAt     DateTime?                 // Date de dernier export
+  deletionRequestedAt DateTime?               // Date demande suppression (soft delete)
+  deletionScheduledFor DateTime?              // Date suppression programmée (30 jours après demande)
+  isDeleted          Boolean  @default(false) // Soft delete flag
 }
 
 model OTPCode {
