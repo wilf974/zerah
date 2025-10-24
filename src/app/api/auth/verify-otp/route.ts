@@ -11,8 +11,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, code } = body;
 
+    console.log('[verify-otp] Received:', { email, code });
+
     // Validation des champs
     if (!email || !code) {
+      console.log('[verify-otp] Missing email or code');
       return NextResponse.json(
         { error: 'Email et code requis' },
         { status: 400 }
@@ -34,7 +37,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('[verify-otp] OTP Record found:', !!otpRecord);
+
     if (!otpRecord) {
+      console.log('[verify-otp] Invalid or expired OTP');
       return NextResponse.json(
         { error: 'Code invalide ou expiré' },
         { status: 401 }
@@ -51,21 +57,28 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('[verify-otp] OTP marked as used');
+
     // Trouver ou créer l'utilisateur
     let user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
+      console.log('[verify-otp] Creating new user');
       user = await prisma.user.create({
         data: { email },
       });
     }
 
-    // Créer la session
-    await createSession(user.id, user.email);
+    console.log('[verify-otp] User found/created:', { userId: user.id, email: user.email });
 
-    return NextResponse.json(
+    // Créer la session
+    console.log('[verify-otp] Creating session...');
+    await createSession(user.id, user.email);
+    console.log('[verify-otp] Session created successfully');
+
+    const response = NextResponse.json(
       {
         message: 'Authentification réussie',
         user: {
@@ -76,14 +89,21 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
+
+    console.log('[verify-otp] Response headers:', response.headers);
+    console.log('[verify-otp] Success - User authenticated');
+
+    return response;
   } catch (error) {
-    console.error('Error in verify-otp:', error);
+    console.error('[verify-otp] Error:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la vérification du code' },
       { status: 500 }
     );
   }
 }
+
+
 
 
 

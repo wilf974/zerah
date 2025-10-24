@@ -54,6 +54,7 @@ export default function LoginPage() {
 
     try {
       console.log('[login] Vérification OTP:', { email, code: code.length });
+      console.log('[login] Cookies avant:', document.cookie);
       
       const response = await fetch('/api/auth/verify-otp', {
         method: 'POST',
@@ -62,19 +63,28 @@ export default function LoginPage() {
         body: JSON.stringify({ email, code }),
       });
 
-      console.log('[login] Réponse:', { status: response.status, ok: response.ok });
+      console.log('[login] Réponse:', { 
+        status: response.status, 
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
+      });
 
       const data = await response.json();
       
       console.log('[login] Données reçues:', { success: response.ok, error: data.error });
+      console.log('[login] Cookies après réponse:', document.cookie);
 
       if (!response.ok) {
         throw new Error(data.error || 'Code invalide');
       }
 
-      console.log('[login] Authentification réussie, redirection...');
-      // Attendre un peu avant de rediriger pour s'assurer que le cookie est stocké
-      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log('[login] Authentification réussie, attente avant redirection...');
+      // Attendre plus longtemps pour s'assurer que le cookie est stocké
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log('[login] Cookies avant redirection:', document.cookie);
+      console.log('[login] Redirection vers dashboard...');
+      
       router.push('/dashboard');
     } catch (err: any) {
       console.error('[login] Erreur vérification:', err.message);
