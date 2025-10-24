@@ -94,3 +94,10 @@ export async function getSession(): Promise<SessionPayload | null> {
   return decrypt(session);
 }
 
+/**
+ * Déconnecte l'utilisateur en supprimant la session
+ */
+export async function logout(): Promise<void> {
+  await deleteSession();
+}
+

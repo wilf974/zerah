@@ -13,6 +13,7 @@ import { useToast, ToastContainer } from '@/components/Toast';
 import ThemeToggle from '@/components/ThemeToggle';
 import DonationLink from '@/components/DonationLink';
 import ProfileReminder from '@/components/ProfileReminder';
+import { useLogoutOnUnload } from '@/lib/hooks/useLogoutOnUnload';
 
 // Rendre cette page dynamique
 export const dynamic = 'force-dynamic';
@@ -130,6 +131,9 @@ export default function DashboardPage() {
     const interval = setInterval(loadUserStats, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // Logout au fermeture de page
+  useLogoutOnUnload();
 
   // Tracker l'activité de l'utilisateur toutes les 5 minutes
   // et déconnecter après 10 minutes d'inactivité
