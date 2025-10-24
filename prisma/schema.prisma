@@ -68,6 +68,16 @@ model Habit {
   userId      Int
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime     @default(now())
+  
+  // Archive & Organization
+  isArchived  Boolean      @default(false)  // Soft delete pour archiver
+  category    String?      // Catégorie (ex: "Sport", "Santé", "Apprentissage")
+  tags        String?      // Tags comma-separated (ex: "cardio,motivation")
+  
+  // Custom Objectives
+  frequency   String       @default("daily")  // "daily", "3x/week", "2x/week", "weekly", etc.
+  targetDays  Int          @default(7)        // Nombre de jours objectif par semaine (7=daily, 3=3x/week, etc.)
+  
   entries     HabitEntry[]
   details     HabitDetail[] // Champs personnalisés (ml, durée, etc.)
 }
