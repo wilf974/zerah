@@ -299,6 +299,8 @@ export default function DashboardPage() {
             {/* Logo */}
             <div className="flex items-center space-x-3 flex-1">
               <span className="text-3xl">🎯</span>
+              
+              {/* Desktop Version */}
               <div className="hidden sm:block">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Zerah</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -306,6 +308,14 @@ export default function DashboardPage() {
                 </p>
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                   🟢 {userStats?.onlineUsers ?? '—'} en ligne / {userStats?.totalUsers ?? '—'} inscrits
+                </p>
+              </div>
+
+              {/* Mobile Version - Compact */}
+              <div className="sm:hidden">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Zerah</h1>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                  🟢 {userStats?.onlineUsers ?? '—'}/{userStats?.totalUsers ?? '—'}
                 </p>
               </div>
             </div>
