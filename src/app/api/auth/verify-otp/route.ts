@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createSession } from '@/lib/session';
+import { encrypt } from '@/lib/session';
 
 /**
  * API Route: POST /api/auth/verify-otp
@@ -73,10 +73,11 @@ export async function POST(request: NextRequest) {
 
     console.log('[verify-otp] User found/created:', { userId: user.id, email: user.email });
 
-    // Créer la session
+    // Créer la session JWT
     console.log('[verify-otp] Creating session...');
-    await createSession(user.id, user.email);
-    console.log('[verify-otp] Session created successfully');
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours
+    const sessionToken = await encrypt({ userId: user.id, email: user.email, expiresAt });
+    console.log('[verify-otp] Session token created');
 
     const response = NextResponse.json(
       {
@@ -90,6 +91,17 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
+    // Définir le cookie dans la réponse HTTP explicitement
+    const isProduction = process.env.NODE_ENV === 'production';
+    response.cookies.set('session', sessionToken, {
+      httpOnly: true,
+      secure: isProduction,
+      expires: expiresAt,
+      sameSite: isProduction ? 'strict' : 'lax',
+      path: '/',
+    });
+
+    console.log('[verify-otp] Session cookie set in response');
     console.log('[verify-otp] Response headers:', response.headers);
     console.log('[verify-otp] Success - User authenticated');
 
