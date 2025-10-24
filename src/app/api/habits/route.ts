@@ -4,9 +4,14 @@ import { verifySession } from '@/lib/dal';
 
 /**
  * API Route: GET /api/habits
- * Récupère toutes les habitudes de l'utilisateur connecté
+ * Récupère les habitudes de l'utilisateur avec filtrage et tri
+ * Query params:
+ * - showArchived: "true"|"false" (défaut: false)
+ * - category: nom de la catégorie (optionnel)
+ * - sortBy: "name"|"created"|"completion" (défaut: "created")
+ * - sortOrder: "asc"|"desc" (défaut: "desc")
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await verifySession();
 
@@ -17,13 +22,41 @@ export async function GET() {
       );
     }
 
+    // Récupérer les paramètres de filtrage
+    const searchParams = request.nextUrl.searchParams;
+    const showArchived = searchParams.get('showArchived') === 'true';
+    const category = searchParams.get('category');
+    const sortBy = searchParams.get('sortBy') || 'created';
+    const sortOrder = (searchParams.get('sortOrder') || 'desc') as 'asc' | 'desc';
+
+    // Construire le filtre
+    const where: any = {
+      userId: session.userId,
+      isArchived: showArchived ? undefined : false, // Ne pas filtrer si showArchived=true
+    };
+
+    if (category) {
+      where.category = category;
+    }
+
+    // Construire le tri
+    const orderBy: any = {};
+    switch (sortBy) {
+      case 'name':
+        orderBy.name = sortOrder;
+        break;
+      case 'completion':
+        // Tri par création par défaut (pas de tri par complétion côté DB)
+        orderBy.createdAt = sortOrder;
+        break;
+      case 'created':
+      default:
+        orderBy.createdAt = sortOrder;
+    }
+
     const habits = await prisma.habit.findMany({
-      where: {
-        userId: session.userId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      where,
+      orderBy,
       include: {
         entries: {
           orderBy: {

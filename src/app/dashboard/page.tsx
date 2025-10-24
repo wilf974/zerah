@@ -14,6 +14,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import DonationLink from '@/components/DonationLink';
 import ProfileReminder from '@/components/ProfileReminder';
 import { useLogoutOnUnload } from '@/lib/hooks/useLogoutOnUnload';
+import HabitFilters from '@/components/HabitFilters';
 
 // Rendre cette page dynamique
 export const dynamic = 'force-dynamic';
@@ -49,15 +50,30 @@ export default function DashboardPage() {
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userStats, setUserStats] = useState<{ onlineUsers: number; totalUsers: number } | null>(null);
+  
+  // Filtres
+  const [showArchived, setShowArchived] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [sortBy, setSortBy] = useState<'created' | 'name' | 'completion'>('created');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  
   const router = useRouter();
   const { toasts, addToast, removeToast } = useToast();
 
   /**
-   * Charge les habitudes de l'utilisateur
+   * Charge les habitudes avec filtrage
    */
   const loadHabits = async () => {
     try {
-      const response = await fetch('/api/habits');
+      const params = new URLSearchParams();
+      params.append('showArchived', showArchived.toString());
+      if (selectedCategory) {
+        params.append('category', selectedCategory);
+      }
+      params.append('sortBy', sortBy);
+      params.append('sortOrder', sortOrder);
+      
+      const response = await fetch(`/api/habits?${params.toString()}`);
       
       if (!response.ok) {
         throw new Error('Erreur lors du chargement');
@@ -186,11 +202,11 @@ export default function DashboardPage() {
     };
   }, []);
 
-  // Charger les habitudes et le profil au montage
+  // Charger les habitudes et le profil au montage et quand les filtres changent
   useEffect(() => {
     loadHabits();
     loadUserProfile();
-  }, []);
+  }, [showArchived, selectedCategory, sortBy, sortOrder]);
 
   /**
    * Gère la création d'une nouvelle habitude
@@ -275,6 +291,61 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Error toggling habit:', error);
       addToast('Erreur lors de la mise à jour', 'error');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  /**
+   * Archive ou désarchive une habitude
+   */
+  const handleArchiveHabit = async (habitId: number, currentlyArchived: boolean) => {
+    setActionLoading(habitId);
+    try {
+      const response = await fetch(`/api/habits/${habitId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isArchived: !currentlyArchived }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour');
+      }
+
+      addToast(
+        currentlyArchived ? 'Habitude désarchivée ✓' : 'Habitude archivée 📁',
+        'success'
+      );
+      await loadHabits();
+    } catch (error) {
+      console.error('Error archiving habit:', error);
+      addToast('Erreur lors de l\'archivage', 'error');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  /**
+   * Met à jour la catégorie d'une habitude
+   */
+  const handleUpdateCategory = async (habitId: number, category: string) => {
+    setActionLoading(habitId);
+    try {
+      const response = await fetch(`/api/habits/${habitId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: category || null }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour');
+      }
+
+      addToast('Catégorie mise à jour ✓', 'success');
+      await loadHabits();
+    } catch (error) {
+      console.error('Error updating category:', error);
+      addToast('Erreur lors de la mise à jour de la catégorie', 'error');
     } finally {
       setActionLoading(null);
     }
@@ -406,6 +477,19 @@ export default function DashboardPage() {
 
         {/* Profile Reminder */}
         <ProfileReminder profile={userProfile} />
+
+        {/* Filtres */}
+        {habits.length > 0 && (
+          <HabitFilters
+            categories={Array.from(new Set(habits.map(h => (h as any).category).filter(Boolean)))}
+            onFilterChange={(filters) => {
+              setShowArchived(filters.showArchived);
+              setSelectedCategory(filters.category);
+              setSortBy(filters.sortBy);
+              setSortOrder(filters.sortOrder);
+            }}
+          />
+        )}
 
         {/* Actions */}
         <div className="mb-8">
