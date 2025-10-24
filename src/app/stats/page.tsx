@@ -19,6 +19,7 @@ export const dynamic = 'force-dynamic';
  */
 export default function StatsPage() {
   const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -28,12 +29,48 @@ export default function StatsPage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <Link href="/dashboard" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                ← Retour au dashboard
+                ← Retour
               </Link>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">📊 Statistiques</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">📊 Stats</h1>
             </div>
-            <ThemeToggle />
+            <div className="flex items-center space-x-2">
+              <ThemeToggle />
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="hidden sm:inline text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2"
+                aria-label="Toggle menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {mobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
+          
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <div className="sm:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <Link href="/dashboard">
+                <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  🎯 Dashboard
+                </button>
+              </Link>
+              <Link href="/profile">
+                <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  👤 Profil
+                </button>
+              </Link>
+              <Link href="/settings">
+                <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  🔐 Confidentialité
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 
