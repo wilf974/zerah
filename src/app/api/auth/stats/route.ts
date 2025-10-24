@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
  * API Route: GET /api/auth/stats
  * Retourne les statistiques d'utilisation de l'application
  * - Nombre d'utilisateurs inscrits
- * - Nombre d'utilisateurs en ligne (utilisateurs avec au moins une habitude validée aujourd'hui)
+ * - Nombre d'utilisateurs actifs aujourd'hui
  */
 export async function GET(request: NextRequest) {
   try {
@@ -16,53 +16,57 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // Compter les utilisateurs "en ligne" = utilisateurs actifs aujourd'hui
-    // (ceux qui ont complété une habitude aujourd'hui ou créé une habitude aujourd'hui)
+    console.log('[stats] Total users:', totalUsers);
+
+    // Compter les utilisateurs actifs aujourd'hui (ont une entrée d'habitude créée aujourd'hui)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const activeUsers = await prisma.user.count({
+    const tomorrowStart = new Date(today);
+    tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+
+    console.log('[stats] Date range:', { today, tomorrowStart });
+
+    const activeUsers = await prisma.habitEntry.findMany({
       where: {
-        isDeleted: false,
-        OR: [
-          {
-            habits: {
-              some: {
-                entries: {
-                  some: {
-                    date: {
-                      gte: today,
-                    },
-                  },
-                },
-              },
-            },
+        createdAt: {
+          gte: today,
+          lt: tomorrowStart,
+        },
+      },
+      distinct: ['habitId'],
+      select: {
+        habit: {
+          select: {
+            userId: true,
           },
-          {
-            habits: {
-              some: {
-                createdAt: {
-                  gte: today,
-                },
-              },
-            },
-          },
-        ],
+        },
       },
     });
+
+    console.log('[stats] Active entries today:', activeUsers.length);
+
+    // Compter les utilisateurs uniques
+    const uniqueUserIds = new Set(activeUsers.map(e => e.habit.userId));
+    const onlineUsers = uniqueUserIds.size;
+
+    console.log('[stats] Online users (unique):', onlineUsers);
 
     return NextResponse.json(
       {
         totalUsers,
-        onlineUsers: activeUsers,
+        onlineUsers,
         timestamp: new Date().toISOString(),
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error in auth/stats:', error);
+    console.error('[stats] Error:', error);
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des statistiques' },
+      { 
+        error: 'Erreur lors de la récupération des statistiques',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
