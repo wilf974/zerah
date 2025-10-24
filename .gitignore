@@ -37,8 +37,8 @@ next-env.d.ts
 *.pem
 
 # Prisma
-prisma/migrations/*
-!prisma/migrations/.gitkeep
+!prisma/migrations/
+!prisma/migrations/**/*.sql
 
 # IDEs
 .idea
