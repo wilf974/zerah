@@ -214,12 +214,13 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-900 shadow-sm">
+      <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            {/* Logo */}
+            <div className="flex items-center space-x-3 flex-1">
               <span className="text-3xl">🎯</span>
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Zerah</h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {format(new Date(), 'EEEE d MMMM yyyy', { locale: fr })}
@@ -228,28 +229,28 @@ export default function DashboardPage() {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
               <ThemeToggle />
               <Link href="/stats">
-                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium">
-                  📊 Stats →
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  📊 Stats
                 </button>
               </Link>
               <Link href="/profile">
-                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium">
-                  Profil →
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  👤 Profil
                 </button>
               </Link>
               <Link href="/settings">
-                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium">
-                  🔐 Confidentialité →
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  🔐 Confidentialité
                 </button>
               </Link>
               <button
                 onClick={handleLogout}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                Déconnexion →
+                🚪 Déconnexion
               </button>
             </div>
 
@@ -258,7 +259,7 @@ export default function DashboardPage() {
               <ThemeToggle />
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
                 aria-label="Toggle menu"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,26 +273,29 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Mobile Navigation Menu */}
+          {/* Mobile Navigation Menu - Dropdown */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-              <Link href="/stats">
+            <div className="md:hidden mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-1">
+              <Link href="/stats" onClick={() => setMobileMenuOpen(false)}>
                 <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   📊 Statistiques
                 </button>
               </Link>
-              <Link href="/profile">
+              <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
                 <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   👤 Profil
                 </button>
               </Link>
-              <Link href="/settings">
+              <Link href="/settings" onClick={() => setMobileMenuOpen(false)}>
                 <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   🔐 Confidentialité
                 </button>
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
                 className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 🚪 Déconnexion
