@@ -17,12 +17,12 @@
 - [x] Animation de confettis lors de série de 7+ jours
 - [x] Page de profil utilisateur (modifier nom, email)
 
-### Phase 2 : Fonctionnalités Avancées
-- [ ] Vue calendrier mensuel interactif
-- [ ] Filtres et tri des habitudes
-- [ ] Archivage d'habitudes
-- [ ] Tags/catégories pour habitudes
-- [ ] Objectifs personnalisés (ex: 3x/semaine au lieu de quotidien)
+### Phase 2 : Fonctionnalités Avancées ✅ COMPLÉTÉE
+- [x] Vue calendrier mensuel interactif (HeatmapChart)
+- [x] Filtres et tri des habitudes (HabitFilters component)
+- [x] Archivage d'habitudes (isArchived soft delete)
+- [x] Tags/catégories pour habitudes (category field)
+- [x] Objectifs personnalisés (frequency + targetDays)
 - [x] **Détails personnalisés par habitude** (eau: ml/verres, exercice: durée/distance, etc.)
   - [x] Schéma Prisma avec HabitDetail et HabitEntryValue
   - [x] API pour créer/modifier les détails d'une habitude

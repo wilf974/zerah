@@ -1,5 +1,38 @@
 # Historique du Projet - Zerah (Suivi d'Habitudes Personnalisé)
 
+## 📅 24 Octobre 2025 - Phase 2 : Organisation des Habitudes ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `prisma/schema.prisma` - Ajout de isArchived, category, tags, frequency, targetDays
+- ✅ `prisma/migrations/0002_add_habit_features/migration.sql` - Migration des colonnes
+- ✅ `src/app/api/habits/route.ts` - Filtrage et tri côté API
+- ✅ `src/app/api/habits/[id]/route.ts` - Ajout PATCH pour archivage/catégorie
+- ✅ `src/components/HabitFilters.tsx` - Composant de filtrage UI
+- ✅ `src/components/HabitCardOptions.tsx` - Menu d'options pour habitude
+- ✅ `src/app/dashboard/page.tsx` - Intégration des filtres et archivage
+
+**Fonctionnalités implémentées :**
+- ✅ **Archivage d'habitudes** - Soft delete avec `isArchived`
+- ✅ **Catégories** - Organiser habitudes par catégorie (Sport, Santé, etc.)
+- ✅ **Tags** - Support de tags comma-separated
+- ✅ **Objectifs personnalisés** - frequency (daily, 3x/week, etc.) + targetDays
+- ✅ **Filtres dynamiques** - Par catégorie, avec affichage/masquage archivées
+- ✅ **Tri flexible** - Par création, nom, taux de complétion
+- ✅ **UI contextuelle** - Menu d'options avec archivage et catégories
+
+**API Updates :**
+- `GET /api/habits` - Query params: showArchived, category, sortBy, sortOrder
+- `PATCH /api/habits/[id]` - Update isArchived, category, tags, frequency, targetDays
+
+**Résultat :**
+✅ **Phase 2 complètement déployée** - Habitudes organisées et archivables
+✅ Filtres dynamiques pour meilleures performances
+✅ Infrastructure pour objectifs personnalisés (prêt pour Phase 3)
+✅ DB propre et cohérente
+
+---
+
 ## 📅 24 Octobre 2025 - Session Cleanup & Auto-Logout ✅
 
 ### Modifications
