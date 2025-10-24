@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
 
     console.log('[stats] Total users:', totalUsers);
 
-    // Compter les utilisateurs actifs aujourd'hui (ont une entrée d'habitude créée aujourd'hui)
+    // Compter les utilisateurs actifs aujourd'hui
+    // Critères: ont créé une entrée OU se sont connectés aujourd'hui
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -27,14 +28,14 @@ export async function GET(request: NextRequest) {
 
     console.log('[stats] Date range:', { today, tomorrowStart });
 
-    const activeUsers = await prisma.habitEntry.findMany({
+    // 1. Utilisateurs avec entrées créées aujourd'hui
+    const entriesWithUsers = await prisma.habitEntry.findMany({
       where: {
         createdAt: {
           gte: today,
           lt: tomorrowStart,
         },
       },
-      distinct: ['habitId'],
       select: {
         habit: {
           select: {
@@ -44,11 +45,29 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log('[stats] Active entries today:', activeUsers.length);
+    // 2. Utilisateurs avec sessions créées aujourd'hui (connectés aujourd'hui)
+    const sessionsToday = await prisma.session.findMany({
+      where: {
+        createdAt: {
+          gte: today,
+          lt: tomorrowStart,
+        },
+      },
+      select: {
+        userId: true,
+      },
+    });
 
-    // Compter les utilisateurs uniques
-    const uniqueUserIds = new Set(activeUsers.map(e => e.habit.userId));
-    const onlineUsers = uniqueUserIds.size;
+    console.log('[stats] Entries today:', entriesWithUsers.length);
+    console.log('[stats] Sessions today:', sessionsToday.length);
+
+    // Combiner les deux listes et compter les utilisateurs uniques
+    const userIds = new Set<number>();
+    
+    entriesWithUsers.forEach(e => userIds.add(e.habit.userId));
+    sessionsToday.forEach(s => userIds.add(s.userId));
+
+    const onlineUsers = userIds.size;
 
     console.log('[stats] Online users (unique):', onlineUsers);
 

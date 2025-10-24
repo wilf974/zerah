@@ -63,8 +63,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer la session JWT
+    console.log('[verify-otp] Creating session...');
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours
     const sessionToken = await encrypt({ userId: user.id, email: user.email, expiresAt });
+    console.log('[verify-otp] Session token created');
+
+    // Créer une entrée de session en base de données pour tracker l'activité
+    try {
+      await prisma.session.create({
+        data: {
+          userId: user.id,
+          expiresAt,
+        },
+      });
+      console.log('[verify-otp] Session record created in database');
+    } catch (sessionError) {
+      console.error('[verify-otp] Error creating session record:', sessionError);
+      // Ne pas bloquer l'authentification si la session en base échoue
+    }
 
     const response = NextResponse.json(
       {
