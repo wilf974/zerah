@@ -57,6 +57,14 @@ export default function HabitStatsModal({ habit, onClose }: HabitStatsModalProps
     loadStats();
   }, [habit.id]);
 
+  const tabs = [
+    { id: 'stats', label: '📊 Statistiques', emoji: '📊' },
+    { id: 'details-stats', label: '📈 Stats Détails', emoji: '📈' },
+    { id: 'calendar', label: '📅 Calendrier', emoji: '📅' },
+    { id: 'heatmap', label: '🔥 Heatmap', emoji: '🔥' },
+    { id: 'insights', label: '💡 Insights', emoji: '💡' },
+  ] as const;
+
   if (loading || !stats) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
@@ -74,72 +82,51 @@ export default function HabitStatsModal({ habit, onClose }: HabitStatsModalProps
     <>
       <StreakCelebration streak={stats.currentStreak} habitName={habit.name} />
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-        <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-3xl w-full p-6 shadow-2xl my-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <span className="text-3xl">{habit.icon || '📝'}</span>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{habit.name}</h2>
+        <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl my-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+              <span className="text-2xl sm:text-3xl flex-shrink-0">{habit.icon || '📝'}</span>
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">{habit.name}</h2>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl ml-2 flex-shrink-0"
             >
               ×
             </button>
           </div>
 
-          {/* Tabs */}
-          <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
-            <button
-              onClick={() => setActiveTab('stats')}
-              className={`px-6 py-3 font-semibold transition ${
-                activeTab === 'stats'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
-              }`}
+          {/* Desktop Tabs */}
+          <div className="hidden sm:flex border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 lg:px-6 py-3 font-semibold transition whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === tab.id
+                    ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Mobile Tab Selector */}
+          <div className="sm:hidden mb-6">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value as any)}
+              className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-semibold focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             >
-              📊 Statistiques
-            </button>
-            <button
-              onClick={() => setActiveTab('details-stats')}
-              className={`px-6 py-3 font-semibold transition ${
-                activeTab === 'details-stats'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
-              }`}
-            >
-              📈 Stats Détails
-            </button>
-            <button
-              onClick={() => setActiveTab('calendar')}
-              className={`px-6 py-3 font-semibold transition ${
-                activeTab === 'calendar'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
-              }`}
-            >
-              📅 Calendrier
-            </button>
-            <button
-              onClick={() => setActiveTab('heatmap')}
-              className={`px-6 py-3 font-semibold transition ${
-                activeTab === 'heatmap'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
-              }`}
-            >
-              🔥 Heatmap
-            </button>
-            <button
-              onClick={() => setActiveTab('insights')}
-              className={`px-6 py-3 font-semibold transition ${
-                activeTab === 'insights'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
-              }`}
-            >
-              💡 Insights
-            </button>
+              {tabs.map((tab) => (
+                <option key={tab.id} value={tab.id}>
+                  {tab.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Stats Tab */}
