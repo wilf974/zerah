@@ -131,6 +131,57 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Tracker l'activité de l'utilisateur toutes les 5 minutes
+  // et déconnecter après 10 minutes d'inactivité
+  useEffect(() => {
+    let inactivityTimeout: NodeJS.Timeout;
+    
+    const trackActivity = async () => {
+      try {
+        await fetch('/api/auth/activity', {
+          method: 'POST',
+          credentials: 'include',
+        });
+      } catch (error) {
+        console.error('Error tracking activity:', error);
+      }
+    };
+
+    const resetInactivityTimer = () => {
+      // Annuler le timer d'inactivité précédent
+      if (inactivityTimeout) {
+        clearTimeout(inactivityTimeout);
+      }
+
+      // Tracker immédiatement
+      trackActivity();
+
+      // Définir un nouveau timer pour 10 minutes d'inactivité
+      inactivityTimeout = setTimeout(() => {
+        console.log('User inactive for 10 minutes, logging out');
+        handleLogout();
+      }, 10 * 60 * 1000); // 10 minutes
+    };
+
+    // Tracker l'activité au montage
+    resetInactivityTimer();
+
+    // Listener sur les événements utilisateur
+    const events = ['mousedown', 'keydown', 'touchstart', 'click'];
+    
+    events.forEach(event => {
+      window.addEventListener(event, resetInactivityTimer);
+    });
+
+    // Cleanup
+    return () => {
+      clearTimeout(inactivityTimeout);
+      events.forEach(event => {
+        window.removeEventListener(event, resetInactivityTimer);
+      });
+    };
+  }, []);
+
   // Charger les habitudes et le profil au montage
   useEffect(() => {
     loadHabits();

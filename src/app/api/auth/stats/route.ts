@@ -18,39 +18,16 @@ export async function GET(request: NextRequest) {
 
     console.log('[stats] Total users:', totalUsers);
 
-    // Compter les utilisateurs actifs aujourd'hui
-    // Critères: ont créé une entrée OU se sont connectés aujourd'hui
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const tomorrowStart = new Date(today);
-    tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+    // Compter les utilisateurs ACTIFS EN CE MOMENT (10 dernières minutes)
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
 
-    console.log('[stats] Date range:', { today, tomorrowStart });
+    console.log('[stats] Time window:', { tenMinutesAgo, now: new Date() });
 
-    // 1. Utilisateurs avec entrées créées aujourd'hui
-    const entriesWithUsers = await prisma.habitEntry.findMany({
+    // Trouver les sessions actives (modifiées dans les 10 dernières minutes)
+    const activeSessions = await prisma.session.findMany({
       where: {
-        createdAt: {
-          gte: today,
-          lt: tomorrowStart,
-        },
-      },
-      select: {
-        habit: {
-          select: {
-            userId: true,
-          },
-        },
-      },
-    });
-
-    // 2. Utilisateurs avec sessions créées aujourd'hui (connectés aujourd'hui)
-    const sessionsToday = await prisma.session.findMany({
-      where: {
-        createdAt: {
-          gte: today,
-          lt: tomorrowStart,
+        updatedAt: {
+          gte: tenMinutesAgo,
         },
       },
       select: {
@@ -58,15 +35,10 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log('[stats] Entries today:', entriesWithUsers.length);
-    console.log('[stats] Sessions today:', sessionsToday.length);
+    console.log('[stats] Active sessions (10min):', activeSessions.length);
 
-    // Combiner les deux listes et compter les utilisateurs uniques
-    const userIds = new Set<number>();
-    
-    entriesWithUsers.forEach(e => userIds.add(e.habit.userId));
-    sessionsToday.forEach(s => userIds.add(s.userId));
-
+    // Compter les utilisateurs uniques
+    const userIds = new Set(activeSessions.map(s => s.userId));
     const onlineUsers = userIds.size;
 
     console.log('[stats] Online users (unique):', onlineUsers);
