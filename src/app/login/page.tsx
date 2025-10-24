@@ -4,6 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DonationLink from '@/components/DonationLink';
 
+type LogEntry = {
+  timestamp: string;
+  message: string;
+  level: 'info' | 'error' | 'success';
+};
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
@@ -11,7 +17,18 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [showDebug, setShowDebug] = useState(false);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const router = useRouter();
+
+  /**
+   * Ajoute un log au debug panel
+   */
+  const addLog = (message: string, level: 'info' | 'error' | 'success' = 'info') => {
+    const timestamp = new Date().toLocaleTimeString('fr-FR');
+    console.log(`[${level.toUpperCase()}] ${message}`);
+    setLogs(prev => [...prev, { timestamp, message, level }]);
+  };
 
   /**
    * Envoie un code OTP à l'email fourni
@@ -23,21 +40,26 @@ export default function LoginPage() {
     setMessage('');
 
     try {
+      addLog(`Envoi OTP pour: ${email}`, 'info');
+      
       const response = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
+      addLog(`Réponse serveur: ${response.status}`, 'info');
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || 'Erreur lors de l\'envoi du code');
       }
 
+      addLog('Code OTP envoyé avec succès! Vérifiez votre email.', 'success');
       setMessage('Code envoyé ! Vérifiez votre email.');
       setStep('code');
     } catch (err: any) {
+      addLog(`Erreur: ${err.message}`, 'error');
       setError(err.message);
     } finally {
       setLoading(false);
@@ -53,41 +75,35 @@ export default function LoginPage() {
     setError('');
 
     try {
-      console.log('[login] Vérification OTP:', { email, code: code.length });
-      console.log('[login] Cookies avant:', document.cookie);
+      addLog(`Vérification OTP: ${code}`, 'info');
+      addLog(`Cookies avant: ${document.cookie || 'aucun'}`, 'info');
       
       const response = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',  // Important: inclure les cookies
+        credentials: 'include',
         body: JSON.stringify({ email, code }),
       });
 
-      console.log('[login] Réponse:', { 
-        status: response.status, 
-        ok: response.ok,
-        headers: Object.fromEntries(response.headers.entries())
-      });
-
+      addLog(`Réponse OTP: ${response.status}`, 'info');
+      
       const data = await response.json();
       
-      console.log('[login] Données reçues:', { success: response.ok, error: data.error });
-      console.log('[login] Cookies après réponse:', document.cookie);
+      addLog(`Cookies après réponse: ${document.cookie || 'aucun'}`, 'info');
 
       if (!response.ok) {
+        addLog(`Erreur OTP: ${data.error}`, 'error');
         throw new Error(data.error || 'Code invalide');
       }
 
-      console.log('[login] Authentification réussie, attente avant redirection...');
-      // Attendre plus longtemps pour s'assurer que le cookie est stocké
+      addLog('✅ Authentification réussie!', 'success');
+      addLog('Attente 1 seconde avant redirection...', 'info');
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      console.log('[login] Cookies avant redirection:', document.cookie);
-      console.log('[login] Redirection vers dashboard...');
-      
+      addLog('Redirection vers dashboard...', 'info');
       router.push('/dashboard');
     } catch (err: any) {
-      console.error('[login] Erreur vérification:', err.message);
+      addLog(`❌ Erreur: ${err.message}`, 'error');
       setError(err.message);
     } finally {
       setLoading(false);
@@ -213,6 +229,41 @@ export default function LoginPage() {
         <div className="mt-8">
           <DonationLink />
         </div>
+
+        {/* Debug Panel - Mobile Testing */}
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={() => setShowDebug(!showDebug)}
+            className="text-white text-xs bg-gray-700 hover:bg-gray-800 px-3 py-1 rounded transition"
+          >
+            {showDebug ? '🔍 Masquer Logs' : '🔍 Afficher Logs'}
+          </button>
+        </div>
+
+        {showDebug && (
+          <div className="mt-4 bg-black text-white rounded-lg p-4 max-h-48 overflow-y-auto text-xs font-mono border border-gray-700">
+            <div className="mb-2 text-gray-400">--- Logs de débogage ---</div>
+            {logs.length === 0 ? (
+              <div className="text-gray-500">Aucun log pour le moment...</div>
+            ) : (
+              logs.map((log, idx) => (
+                <div
+                  key={idx}
+                  className={`mb-1 ${
+                    log.level === 'error'
+                      ? 'text-red-400'
+                      : log.level === 'success'
+                      ? 'text-green-400'
+                      : 'text-blue-400'
+                  }`}
+                >
+                  <span className="text-gray-500">[{log.timestamp}]</span> {log.message}
+                </div>
+              ))
+            )}
+          </div>
+        )}
 
         {/* Footer */}
         <div className="text-center mt-4 text-white text-sm">
