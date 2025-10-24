@@ -1,5 +1,37 @@
 # Historique du Projet - Zerah (Suivi d'Habitudes Personnalisé)
 
+## 📅 24 Octobre 2025 - Session Cleanup & Auto-Logout ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `src/app/api/auth/logout/route.ts` - Supprime les sessions de la DB
+- ✅ `src/app/api/auth/stats/route.ts` - Migration `Session.updatedAt` appliquée
+- ✅ `prisma/migrations/0001_add_session_updated_at/migration.sql` - Nouvelle colonne
+- ✅ `src/lib/hooks/useLogoutOnUnload.ts` - Hook pour logout on page close
+- ✅ `src/app/dashboard/page.tsx` - Intégration du hook
+- ✅ `.gitignore` - Autoriser les migrations Prisma
+
+**Fonctionnalités implémentées :**
+- ✅ **Session supprimée quand page fermée** (événement `beforeunload`)
+- ✅ **Auto-logout après 10 min d'inactivité** (no user interaction)
+- ✅ **Migration Prisma** pour ajouter `Session.updatedAt`
+- ✅ **Hook réutilisable** pour toutes les pages
+- ✅ **Compteur utilisateur en temps réel** reflète les déconnexions
+
+**Problèmes résolus :**
+- 🔧 Compteur n'affichait pas les changements quand l'utilisateur fermait la page
+- 🔧 Sessions fantômes restaient dans la DB indéfiniment
+- 🔧 Migration Prisma ignorée par Git (dossier gitignored)
+- 🔧 API `/api/auth/stats` retournait erreur 500 (colonne manquante)
+
+**Résultat :**
+✅ Compteur "X en ligne / Y inscrits" **100% fonctionnel** en temps réel
+✅ Sessions **nettoyées automatiquement** à la fermeture
+✅ **Auto-logout** après 10 min sans activité
+✅ DB propre et cohérente avec l'UI
+
+---
+
 ## 📅 24 Octobre 2025 - Full Mobile Responsiveness ✅
 
 ### Modifications
