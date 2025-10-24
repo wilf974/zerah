@@ -300,11 +300,9 @@ export default function DashboardPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {format(new Date(), 'EEEE d MMMM yyyy', { locale: fr })}
                 </p>
-                {userStats && (
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                    🟢 {userStats.onlineUsers} en ligne / {userStats.totalUsers} inscrits
-                  </p>
-                )}
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  🟢 {userStats?.onlineUsers ?? '—'} en ligne / {userStats?.totalUsers ?? '—'} inscrits
+                </p>
               </div>
             </div>
 
