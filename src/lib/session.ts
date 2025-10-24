@@ -62,11 +62,16 @@ export async function createSession(userId: number, email: string): Promise<void
   const session = await encrypt({ userId, email, expiresAt });
 
   const cookieStore = await cookies();
+  
+  // En développement local, être plus lenient avec les cookies pour mobile
+  // En production, utiliser secure: true
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   cookieStore.set('session', session, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProduction,  // false en dev (localhost + 192.168.x.x)
     expires: expiresAt,
-    sameSite: 'lax',
+    sameSite: isProduction ? 'strict' : 'lax',  // 'strict' en prod, 'lax' en dev
     path: '/',
   });
 }

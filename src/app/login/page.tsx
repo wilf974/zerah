@@ -53,20 +53,31 @@ export default function LoginPage() {
     setError('');
 
     try {
+      console.log('[login] Vérification OTP:', { email, code: code.length });
+      
       const response = await fetch('/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',  // Important: inclure les cookies
         body: JSON.stringify({ email, code }),
       });
 
+      console.log('[login] Réponse:', { status: response.status, ok: response.ok });
+
       const data = await response.json();
+      
+      console.log('[login] Données reçues:', { success: response.ok, error: data.error });
 
       if (!response.ok) {
         throw new Error(data.error || 'Code invalide');
       }
 
+      console.log('[login] Authentification réussie, redirection...');
+      // Attendre un peu avant de rediriger pour s'assurer que le cookie est stocké
+      await new Promise(resolve => setTimeout(resolve, 500));
       router.push('/dashboard');
     } catch (err: any) {
+      console.error('[login] Erreur vérification:', err.message);
       setError(err.message);
     } finally {
       setLoading(false);
