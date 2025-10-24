@@ -47,6 +47,7 @@ export default function DashboardPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<Habit | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userStats, setUserStats] = useState<{ onlineUsers: number; totalUsers: number } | null>(null);
   const router = useRouter();
   const { toasts, addToast, removeToast } = useToast();
 
@@ -94,11 +95,6 @@ export default function DashboardPage() {
     }
   };
 
-  useEffect(() => {
-    loadHabits();
-    loadUserProfile();
-  }, []);
-
   /**
    * Déconnecte l'utilisateur
    */
@@ -112,6 +108,34 @@ export default function DashboardPage() {
       addToast('Erreur lors de la déconnexion', 'error');
     }
   };
+
+  /**
+   * Charge les statistiques d'utilisation de l'application
+   */
+  const loadUserStats = async () => {
+    try {
+      const response = await fetch('/api/auth/stats');
+      if (response.ok) {
+        const data = await response.json();
+        setUserStats(data);
+      }
+    } catch (error) {
+      console.error('Error loading user stats:', error);
+    }
+  };
+
+  // Charger les stats au montage et les rafraîchir toutes les 30 secondes
+  useEffect(() => {
+    loadUserStats();
+    const interval = setInterval(loadUserStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Charger les habitudes et le profil au montage
+  useEffect(() => {
+    loadHabits();
+    loadUserProfile();
+  }, []);
 
   /**
    * Gère la création d'une nouvelle habitude
@@ -225,6 +249,11 @@ export default function DashboardPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {format(new Date(), 'EEEE d MMMM yyyy', { locale: fr })}
                 </p>
+                {userStats && (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                    🟢 {userStats.onlineUsers} en ligne / {userStats.totalUsers} inscrits
+                  </p>
+                )}
               </div>
             </div>
 
