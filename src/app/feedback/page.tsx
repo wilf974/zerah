@@ -1,44 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTheme } from '@/context/ThemeContext';
 
-interface Feedback {
-  id: number;
-  title: string;
-  description: string;
-  category: 'bug' | 'feature' | 'ux' | 'other';
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const categoryColors = {
-  bug: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  feature: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  ux: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  other: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
-};
-
-const statusIcons = {
-  open: '🟡',
-  'in-review': '🔵',
-  planned: '🟢',
-  completed: '✅',
-  rejected: '❌',
-};
-
-const statusLabels = {
-  open: 'Ouvert',
-  'in-review': 'En révision',
-  planned: 'Planifié',
-  completed: 'Complété',
-  rejected: 'Rejeté',
-};
-
-export default function FeedbackPage() {
+// Component interne qui utilise useTheme
+function FeedbackContent() {
   const { theme } = useTheme();
   const [formData, setFormData] = useState({ title: '', description: '', category: 'feature' });
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
@@ -346,5 +314,46 @@ export default function FeedbackPage() {
         </div>
       )}
     </div>
+  );
+}
+
+interface Feedback {
+  id: number;
+  title: string;
+  description: string;
+  category: 'bug' | 'feature' | 'ux' | 'other';
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const categoryColors = {
+  bug: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+  feature: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  ux: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+  other: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200',
+};
+
+const statusIcons = {
+  open: '🟡',
+  'in-review': '🔵',
+  planned: '🟢',
+  completed: '✅',
+  rejected: '❌',
+};
+
+const statusLabels = {
+  open: 'Ouvert',
+  'in-review': 'En révision',
+  planned: 'Planifié',
+  completed: 'Complété',
+  rejected: 'Rejeté',
+};
+
+export default function FeedbackPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <FeedbackContent />
+    </Suspense>
   );
 }
