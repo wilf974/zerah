@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/dal';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 import { prisma } from '@/lib/prisma';
 import nodemailer from 'nodemailer';
+
+const secretKey = process.env.SESSION_SECRET || '';
+const secret = new TextEncoder().encode(secretKey);
 
 /**
  * Fonction pour envoyer un email personnalisé
@@ -33,18 +37,22 @@ async function sendEmail(to: string, subject: string, html: string): Promise<voi
  */
 export async function GET(request: NextRequest) {
   try {
-    const session = await getSession();
-    
-    if (!session) {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('session')?.value;
+
+    if (!token) {
       return NextResponse.json(
         { error: 'Authentification requise' },
         { status: 401 }
       );
     }
 
+    const verified = await jwtVerify(token, secret);
+    const userId = (verified.payload as { userId: number }).userId;
+
     // Récupérer les feedbacks de l'utilisateur
     const feedbacks = await prisma.feedback.findMany({
-      where: { userId: session.userId },
+      where: { userId },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
@@ -74,14 +82,18 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await getSession();
-    
-    if (!session) {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('session')?.value;
+
+    if (!token) {
       return NextResponse.json(
         { error: 'Authentification requise' },
         { status: 401 }
       );
     }
+
+    const verified = await jwtVerify(token, secret);
+    const userId = (verified.payload as { userId: number }).userId;
 
     const body = await request.json();
     const { title, description, category } = body;
@@ -111,7 +123,7 @@ export async function POST(request: NextRequest) {
     // Créer le feedback dans la base de données
     const feedback = await prisma.feedback.create({
       data: {
-        userId: session.userId,
+        userId,
         title: title.trim(),
         description: description.trim(),
         category,
@@ -129,7 +141,7 @@ export async function POST(request: NextRequest) {
 
     // Récupérer l'email de l'utilisateur pour la notification
     const user = await prisma.user.findUnique({
-      where: { id: session.userId },
+      where: { id: userId },
       select: { email: true, name: true },
     });
 
