@@ -20,6 +20,7 @@
     "nodemailer": "^6.9.16",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-share": "^5.1.0",
     "recharts": "^2.15.0"
   },
   "devDependencies": {

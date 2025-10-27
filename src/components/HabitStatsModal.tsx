@@ -9,6 +9,7 @@ import DetailsStatsChart from './DetailsStatsChart';
 import MonthlyCalendar from './MonthlyCalendar';
 import HeatmapChart from './HeatmapChart';
 import SmartInsights from './SmartInsights';
+import ShareModal from './ShareModal';
 
 type HabitStatsModalProps = {
   habit: {
@@ -38,6 +39,7 @@ export default function HabitStatsModal({ habit, onClose }: HabitStatsModalProps
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'stats' | 'details-stats' | 'calendar' | 'heatmap' | 'insights'>('stats');
+  const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
     const loadStats = async () => {
@@ -89,12 +91,21 @@ export default function HabitStatsModal({ habit, onClose }: HabitStatsModalProps
               <span className="text-2xl sm:text-3xl flex-shrink-0">{habit.icon || '📝'}</span>
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">{habit.name}</h2>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl ml-2 flex-shrink-0"
-            >
-              ×
-            </button>
+            <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 text-2xl p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                title="Partager"
+              >
+                🚀
+              </button>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl"
+              >
+                ×
+              </button>
+            </div>
           </div>
 
           {/* Desktop Tabs */}
@@ -224,6 +235,16 @@ export default function HabitStatsModal({ habit, onClose }: HabitStatsModalProps
           )}
         </div>
       </div>
+
+      {/* Share Modal */}
+      {showShareModal && stats && (
+        <ShareModal
+          habitName={habit.name}
+          streak={stats.currentStreak}
+          completionRate={stats.completionRate}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
     </>
   );
 }

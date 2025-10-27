@@ -23,6 +23,7 @@ Zerah est **100% conforme RGPD**. Tous les droits des utilisateurs sont impléme
 - 🔐 [Politique de Confidentialité](/privacy) - Détail complet RGPD
 - ⚖️ [Conditions d'Utilisation](/terms) - Conditions légales
 - 📖 [Documentation RGPD](./RGPD.md) - Conformité détaillée
+- 🚀 [Guide du Partage Social](./SOCIAL_SHARING.md) - Comment partager vos progrès
 
 ### Gestion des données
 
@@ -65,6 +66,7 @@ Modifiez vos choix anytime via `/settings` → Gérer les consentements
 - 💡 **Insights IA** : Meilleurs jours, tendances, suggestions personnalisées
 - 📥 **Export de Données** : CSV, JSON, PDF pour analyse et sauvegarde
 - 🎯 **Suggestions Intelligentes** : Recommandations adaptées à votre profil de santé
+- 🚀 **Partage sur Réseaux Sociaux** : Partagez vos succès (Twitter, Facebook, LinkedIn, WhatsApp, Telegram, Email)
 - 🚀 **Déploiement Production** : Script automatisé avec HTTPS et SSL
 
 ## ⚡ Déploiement Rapide
