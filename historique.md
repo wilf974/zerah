@@ -1,5 +1,49 @@
 # Historique du Projet - Zerah (Suivi d'Habitudes Personnalisé)
 
+## 📅 27 Octobre 2025 - Phase 8 : Système de Suggestions & Feedback ✅
+
+### Modifications
+**Fichiers créés/modifiés :**
+- ✅ `prisma/schema.prisma` - Ajout du modèle Feedback avec relation User
+- ✅ `src/app/api/feedback/route.ts` - API GET/POST pour feedbacks
+- ✅ `src/app/feedback/page.tsx` - Page complète avec formulaire + historique
+- ✅ `src/app/dashboard/page.tsx` - Ajout lien vers /feedback (desktop + mobile)
+- ✅ `TODO.md` - Mise à jour phase 8
+
+**Fonctionnalités implémentées :**
+- ✅ **Modèle Feedback** dans Prisma avec champs : id, userId, title, description, category, status, createdAt, updatedAt
+- ✅ **Catégories** : bug 🐛, feature ✨, ux 🎨, other 💬
+- ✅ **Statuts** : open, in-review, planned, completed, rejected
+- ✅ **API GET /api/feedback** - Récupère les feedbacks de l'utilisateur authentifié
+- ✅ **API POST /api/feedback** - Soumet un nouveau feedback avec validation
+- ✅ **Email notification** - Envoie email à jean.maillot14@gmail.com avec détails du feedback
+- ✅ **Page /feedback** - UI complète avec deux onglets :
+  - "✏️ Soumettre une idée" : Formulaire avec sélection catégorie, titre, description
+  - "📋 Mes idées" : Historique des feedbacks soumis avec statuts et dates
+- ✅ **UI responsive** - Dark mode, mobile-friendly
+- ✅ **Navigation** - Lien "💡 Feedback" dans les menus desktop et mobile du dashboard
+
+**Sécurité & Validation :**
+- ✅ Authentification requise (session JWT)
+- ✅ Validation des champs (titre et description non vides)
+- ✅ Validation catégorie (bug, feature, ux, other)
+- ✅ Isolation des données (chaque utilisateur ne voit que ses feedbacks)
+- ✅ Longueur max titre (100 chars) et description (1000 chars)
+
+**Workflow utilisateur :**
+1. Dashboard → Clic sur "💡 Feedback"
+2. Remplir formulaire (catégorie, titre, description)
+3. Clic "📤 Envoyer le feedback"
+4. Email sent to owner + feedback visible en "Mes idées"
+5. Statut suivi (🟡 Ouvert → 🔵 En révision → 🟢 Planifié → ✅ Complété)
+
+**Prochaines étapes :**
+→ Lancer Docker pour appliquer la migration Prisma
+→ Tester la page en local
+→ Déployer sur VPS
+
+---
+
 ## 📅 24 Octobre 2025 - Phase 2 : Organisation des Habitudes ✅
 
 ### Modifications

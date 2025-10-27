@@ -409,6 +409,11 @@ export default function DashboardPage() {
                   🔐 Confidentialité
                 </button>
               </Link>
+              <Link href="/feedback">
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  💡 Feedback
+                </button>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -452,6 +457,11 @@ export default function DashboardPage() {
               <Link href="/settings" onClick={() => setMobileMenuOpen(false)}>
                 <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   🔐 Confidentialité
+                </button>
+              </Link>
+              <Link href="/feedback" onClick={() => setMobileMenuOpen(false)}>
+                <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  💡 Feedback
                 </button>
               </Link>
               <button

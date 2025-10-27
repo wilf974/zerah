@@ -93,11 +93,11 @@
 - [ ] Templates d'habitudes prédéfinies
 
 ### Phase 8 : Système de Suggestions & Feedback
-- [ ] Page "Soumettre une idée" accessible aux utilisateurs
-- [ ] Formulaire : Titre + Description + Catégorie (Bug/Feature/UX/Other)
-- [ ] Stockage des suggestions en base de données
-- [ ] **Notification email** à jean.maillot14@gmail.com à chaque nouvelle idée
-- [ ] Panel utilisateur pour voir ses idées soumises
+- [x] Page "Soumettre une idée" accessible aux utilisateurs
+- [x] Formulaire : Titre + Description + Catégorie (Bug/Feature/UX/Other)
+- [x] Stockage des suggestions en base de données
+- [x] **Notification email** à jean.maillot14@gmail.com à chaque nouvelle idée
+- [x] Panel utilisateur pour voir ses idées soumises
 - [ ] Système de vote/likes sur les idées (future)
 - [ ] Page publique des meilleures idées (future)
 
