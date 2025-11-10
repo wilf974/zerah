@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { toast } from 'react-hot-toast';
+import { useToast, ToastContainer } from '@/components/Toast';
 
 interface User {
   id: number;
@@ -54,6 +54,7 @@ export default function DiscussionsClient() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [habits, setHabits] = useState<Habit[]>([]);
+  const { toasts, addToast, removeToast } = useToast();
 
   // Form states
   const [newDiscussion, setNewDiscussion] = useState({
@@ -79,7 +80,7 @@ export default function DiscussionsClient() {
       }
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error('Erreur lors du chargement des discussions');
+      addToast('Erreur lors du chargement des discussions', 'error');
     } finally {
       setLoading(false);
     }
@@ -108,7 +109,7 @@ export default function DiscussionsClient() {
       }
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error('Erreur lors du chargement de la discussion');
+      addToast('Erreur lors du chargement de la discussion', 'error');
     }
   };
 
@@ -116,7 +117,7 @@ export default function DiscussionsClient() {
     e.preventDefault();
 
     if (!newDiscussion.title || !newDiscussion.content) {
-      toast.error('Titre et contenu requis');
+      addToast('Titre et contenu requis', 'error');
       return;
     }
 
@@ -132,16 +133,16 @@ export default function DiscussionsClient() {
       });
 
       if (response.ok) {
-        toast.success('Discussion créée !');
+        addToast('Discussion créée !', 'success');
         setNewDiscussion({ habitId: '', title: '', content: '' });
         setActiveTab('list');
         fetchDiscussions();
       } else {
-        toast.error('Erreur lors de la création');
+        addToast('Erreur lors de la création', 'error');
       }
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error('Erreur lors de la création');
+      addToast('Erreur lors de la création', 'error');
     }
   };
 
@@ -161,17 +162,17 @@ export default function DiscussionsClient() {
       });
 
       if (response.ok) {
-        toast.success('Commentaire ajouté !');
+        addToast('Commentaire ajouté !', 'success');
         setNewComment('');
         setReplyingTo(null);
         // Recharger les détails
         fetchDiscussionDetails(selectedDiscussion.id);
       } else {
-        toast.error('Erreur lors de l\'ajout du commentaire');
+        addToast('Erreur lors de l\'ajout du commentaire', 'error');
       }
     } catch (error) {
       console.error('Erreur:', error);
-      toast.error('Erreur lors de l\'ajout du commentaire');
+      addToast('Erreur lors de l\'ajout du commentaire', 'error');
     }
   };
 
@@ -461,6 +462,9 @@ export default function DiscussionsClient() {
           )}
         </div>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
     </div>
   );
 }
