@@ -117,7 +117,10 @@ export async function POST(
     // Vérifier si tous les participants ont terminé
     const allCompleted = challenge.participants
       .filter(p => p.status === 'accepted')
-      .every(p => updates.find(u => u.userId === p.userId)?.progress >= challenge.targetCompletions);
+      .every(p => {
+        const update = updates.find(u => u.userId === p.userId);
+        return update ? update.progress >= challenge.targetCompletions : false;
+      });
 
     // Mettre à jour le statut du défi si tout le monde a terminé
     if (allCompleted && challenge.status === 'active') {
