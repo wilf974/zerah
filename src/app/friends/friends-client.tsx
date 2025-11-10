@@ -213,7 +213,7 @@ export default function FriendsContent() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Amis</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Gérez vos amis et connectez-vous avec d'autres utilisateurs
+              Gérez vos amis et connectez-vous avec d&apos;autres utilisateurs
             </p>
           </div>
           <Link
@@ -284,7 +284,7 @@ export default function FriendsContent() {
               {friendsData.friends.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500 dark:text-gray-400 text-lg mb-4">
-                    Vous n'avez pas encore d'amis
+                    Vous n&apos;avez pas encore d&apos;amis
                   </p>
                   <button
                     onClick={() => setActiveTab('search')}
