@@ -108,11 +108,22 @@
   - [x] Support du dark mode complet
   - [x] Intégration dans la navigation
 
-### Phase 5 : Notifications
+### Phase 5 : Notifications 🔄 EN COURS
+- [x] **Préférences de notifications** ✅
+  - [x] Modèle Prisma NotificationPreference
+  - [x] Migration 0007_add_notifications
+  - [x] API `/api/notifications/preferences` (GET, PATCH)
+  - [x] Page `/notifications` pour configuration
+  - [x] Interface utilisateur complète avec tous les types de notifications
+  - [x] Rappels quotidiens avec heure personnalisable
+  - [x] Résumés hebdomadaires (choix du jour)
+  - [x] Résumés mensuels (choix de la date)
+  - [x] Types de notifications: habitudes, amis, défis, discussions, succès
+  - [x] Support du dark mode
+  - [x] Intégration dans la navigation
+- [ ] Service d'envoi d'emails automatiques (cron jobs)
 - [ ] Service Worker pour PWA
 - [ ] Notifications push web
-- [ ] Rappels par email personnalisables
-- [ ] Résumés hebdomadaires/mensuels par email
 
 ### Phase 6 : Mobile & Performance
 - [ ] Application mobile (React Native)
@@ -163,17 +174,16 @@ _Aucun bug signalé pour le moment_
 
 ---
 
-**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Forums/Discussions ✅
-- ✅ Système de discussions complet pour la communauté
-- ✅ Modèles Prisma Discussion et Comment avec relations
-- ✅ Migration 0006_add_discussions
-- ✅ API REST complète : GET/POST /api/discussions, /api/discussions/[id], /api/discussions/[id]/comments
-- ✅ Filtrage par habitude, statut (open/closed), tri (récent/populaire)
-- ✅ Page /discussions avec onglets (Liste, Créer, Détails)
-- ✅ Formulaire de création avec sélection d'habitude optionnelle
-- ✅ Système de commentaires imbriqués avec réponses
-- ✅ Compteur de vues automatique
+**Dernière mise à jour** : 10 novembre 2025 - Phase 5 : Préférences de Notifications ✅
+- ✅ Système de gestion des préférences de notifications
+- ✅ Modèle Prisma NotificationPreference avec toutes les options
+- ✅ Migration 0007_add_notifications
+- ✅ API REST complète : GET/PATCH /api/notifications/preferences
+- ✅ Page /notifications avec interface de configuration complète
+- ✅ Paramètres généraux : activation/désactivation des emails
+- ✅ Rappels périodiques : quotidien (avec heure), hebdomadaire (avec jour), mensuel (avec date)
+- ✅ Types de notifications personnalisables : habitudes, amis, défis, discussions, succès
 - ✅ Support complet du dark mode
-- ✅ Navigation intégrée (💬 Forums dans desktop + mobile)
-- ✅ Phase 4 Social & Communauté 100% complète ! 🎉
+- ✅ Navigation intégrée (🔔 Notifications dans desktop + mobile)
+- ✅ Base solide pour l'implémentation future de l'envoi automatique d'emails
 

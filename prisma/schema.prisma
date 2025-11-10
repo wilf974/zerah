@@ -52,6 +52,9 @@ model User {
   // Discussions System
   discussions Discussion[]
   comments    Comment[]
+
+  // Notifications
+  notificationPreferences NotificationPreference?
 }
 
 model OTPCode {
@@ -252,5 +255,33 @@ model Comment {
   @@index([userId])
   @@index([parentId])
   @@index([createdAt])
+}
+
+model NotificationPreference {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Email notifications
+  emailEnabled          Boolean  @default(true)   // Activer/désactiver toutes les notifications email
+  dailyReminder         Boolean  @default(false)  // Rappel quotidien
+  dailyReminderTime     String?  @default("09:00") // Heure du rappel quotidien (format HH:mm)
+  weeklyDigest          Boolean  @default(false)  // Résumé hebdomadaire
+  weeklyDigestDay       Int?     @default(1)      // Jour de la semaine (1=lundi, 7=dimanche)
+  monthlyDigest         Boolean  @default(false)  // Résumé mensuel
+  monthlyDigestDay      Int?     @default(1)      // Jour du mois (1-28)
+
+  // Notification types
+  habitReminders        Boolean  @default(true)   // Rappels pour les habitudes
+  friendRequests        Boolean  @default(true)   // Notifications de demandes d'amis
+  challengeInvites      Boolean  @default(true)   // Invitations aux défis
+  challengeUpdates      Boolean  @default(true)   // Mises à jour des défis
+  discussionReplies     Boolean  @default(true)   // Réponses aux discussions
+  achievements          Boolean  @default(true)   // Notifications de succès/badges
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
