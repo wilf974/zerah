@@ -13,7 +13,7 @@ const secret = new TextEncoder().encode(secretKey);
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -29,7 +29,8 @@ export async function POST(
     const verified = await jwtVerify(token, secret);
     const userId = (verified.payload as { userId: number }).userId;
 
-    const challengeId = parseInt(params.id, 10);
+    const { id } = await params;
+    const challengeId = parseInt(id, 10);
     if (isNaN(challengeId)) {
       return NextResponse.json(
         { error: 'ID de défi invalide' },
