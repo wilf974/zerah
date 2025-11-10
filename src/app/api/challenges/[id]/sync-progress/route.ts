@@ -64,7 +64,7 @@ export async function POST(
     }
 
     // Pour chaque participant accepté, compter les completions
-    const updates = [];
+    const updates: Array<{ userId: number; progress: number; target: number }> = [];
     for (const participant of challenge.participants) {
       if (participant.status !== 'accepted') {
         continue;
