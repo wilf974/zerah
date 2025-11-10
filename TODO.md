@@ -65,7 +65,7 @@
 - [x] Export de données (CSV, JSON, PDF)
 - [x] Insights IA (meilleurs jours, suggestions)
 
-### Phase 4 : Social & Communauté
+### Phase 4 : Social & Communauté ✅ COMPLÉTÉE
 - [x] Partage de succès sur réseaux sociaux
 - [x] **Système d'amis** ✅
   - [x] Modèle Prisma Friendship (senderId, receiverId, status)
@@ -95,7 +95,18 @@
   - [x] Mise en évidence de l'utilisateur connecté
   - [x] Support du dark mode
   - [x] Intégration dans la navigation
-- [ ] Forums/discussions par habitude
+- [x] **Forums/discussions par habitude** ✅
+  - [x] Modèle Prisma Discussion et Comment
+  - [x] Migration 0006_add_discussions
+  - [x] API `/api/discussions` (GET, POST) avec filtres
+  - [x] API `/api/discussions/[id]` (GET, PATCH, DELETE)
+  - [x] API `/api/discussions/[id]/comments` (GET, POST, DELETE)
+  - [x] Page `/discussions` avec liste et création
+  - [x] Système de commentaires imbriqués (réponses)
+  - [x] Compteur de vues automatique
+  - [x] Liens avec habitudes spécifiques
+  - [x] Support du dark mode complet
+  - [x] Intégration dans la navigation
 
 ### Phase 5 : Notifications
 - [ ] Service Worker pour PWA
@@ -152,17 +163,17 @@ _Aucun bug signalé pour le moment_
 
 ---
 
-**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Tableau de Classement ✅
-- ✅ API /api/leaderboard avec système de scoring avancé
-- ✅ Calcul des métriques : habits actives, taux de complétion, streak, total completions
-- ✅ Algorithme de score : (completions × 10) + (taux × 5) + (streak × 20)
-- ✅ Filtres temporels dynamiques (semaine, mois, tout temps)
-- ✅ Page /leaderboard avec podium animé pour le top 3
-- ✅ Cartes distinctives (or, argent, bronze) avec gradient
-- ✅ Liste complète avec rangs et statistiques détaillées
-- ✅ Mise en évidence automatique de l'utilisateur connecté
-- ✅ Badge "Vous" pour identification rapide
-- ✅ Explication du système de scoring
+**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Forums/Discussions ✅
+- ✅ Système de discussions complet pour la communauté
+- ✅ Modèles Prisma Discussion et Comment avec relations
+- ✅ Migration 0006_add_discussions
+- ✅ API REST complète : GET/POST /api/discussions, /api/discussions/[id], /api/discussions/[id]/comments
+- ✅ Filtrage par habitude, statut (open/closed), tri (récent/populaire)
+- ✅ Page /discussions avec onglets (Liste, Créer, Détails)
+- ✅ Formulaire de création avec sélection d'habitude optionnelle
+- ✅ Système de commentaires imbriqués avec réponses
+- ✅ Compteur de vues automatique
 - ✅ Support complet du dark mode
-- ✅ Navigation intégrée (desktop + mobile)
+- ✅ Navigation intégrée (💬 Forums dans desktop + mobile)
+- ✅ Phase 4 Social & Communauté 100% complète ! 🎉
 
