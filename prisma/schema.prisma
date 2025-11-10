@@ -48,6 +48,10 @@ model User {
   // Challenges System
   createdChallenges     Challenge[] @relation("ChallengeCreator")
   challengeParticipants ChallengeParticipant[]
+
+  // Discussions System
+  discussions Discussion[]
+  comments    Comment[]
 }
 
 model OTPCode {
@@ -79,19 +83,20 @@ model Habit {
   userId      Int
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime     @default(now())
-  
+
   // Archive & Organization
   isArchived  Boolean      @default(false)  // Soft delete pour archiver
   category    String?      // Catégorie (ex: "Sport", "Santé", "Apprentissage")
   tags        String?      // Tags comma-separated (ex: "cardio,motivation")
-  
+
   // Custom Objectives
   frequency   String       @default("daily")  // "daily", "3x/week", "2x/week", "weekly", etc.
   targetDays  Int          @default(7)        // Nombre de jours objectif par semaine (7=daily, 3=3x/week, etc.)
-  
+
   entries     HabitEntry[]
   details     HabitDetail[] // Champs personnalisés (ml, durée, etc.)
   challenges  Challenge[] // Défis liés à cette habitude
+  discussions Discussion[] // Discussions liées à cette habitude
 }
 
 model HabitDetail {
@@ -206,5 +211,46 @@ model ChallengeParticipant {
   @@index([challengeId])
   @@index([userId])
   @@index([status])
+}
+
+model Discussion {
+  id          Int       @id @default(autoincrement())
+  habitId     Int?      // Optionnel : discussion liée à une habitude spécifique
+  habit       Habit?    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  userId      Int       // Créateur de la discussion
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String    // Titre de la discussion
+  content     String    @db.Text // Contenu de la discussion
+  isPinned    Boolean   @default(false) // Épingler les discussions importantes
+  status      String    @default("open") // "open", "closed", "archived"
+  viewCount   Int       @default(0) // Nombre de vues
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  comments    Comment[] // Commentaires sur cette discussion
+
+  @@index([userId])
+  @@index([habitId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Comment {
+  id           Int        @id @default(autoincrement())
+  discussionId Int
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  userId       Int        // Auteur du commentaire
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content      String     @db.Text
+  parentId     Int?       // Pour les réponses à d'autres commentaires
+  parent       Comment?   @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies      Comment[]  @relation("CommentReplies")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([discussionId])
+  @@index([userId])
+  @@index([parentId])
+  @@index([createdAt])
 }
 
