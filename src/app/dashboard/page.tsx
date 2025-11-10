@@ -399,6 +399,11 @@ export default function DashboardPage() {
                   📊 Stats
                 </button>
               </Link>
+              <Link href="/friends">
+                <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  👥 Amis
+                </button>
+              </Link>
               <Link href="/profile">
                 <button className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium text-sm lg:text-base px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   👤 Profil
@@ -447,6 +452,11 @@ export default function DashboardPage() {
               <Link href="/stats" onClick={() => setMobileMenuOpen(false)}>
                 <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
                   📊 Statistiques
+                </button>
+              </Link>
+              <Link href="/friends" onClick={() => setMobileMenuOpen(false)}>
+                <button className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition font-medium py-2 px-3 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
+                  👥 Amis
                 </button>
               </Link>
               <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>

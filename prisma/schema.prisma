@@ -40,6 +40,10 @@ model User {
   
   // Feedback & Suggestions
   feedbacks Feedback[] // Suggestions/feedback soumis par l'utilisateur
+
+  // Friends System
+  friendshipsAsSender   Friendship[] @relation("FriendshipSender")
+  friendshipsAsReceiver Friendship[] @relation("FriendshipReceiver")
 }
 
 model OTPCode {
@@ -133,10 +137,26 @@ model Feedback {
   status    String    @default("open") // "open", "in-review", "planned", "completed", "rejected"
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  
+
   // Relation inverse avec User pour retrouver ses suggestions
   @@index([userId])
   @@index([category])
+  @@index([status])
+}
+
+model Friendship {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  sender     User     @relation("FriendshipSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId Int
+  receiver   User     @relation("FriendshipReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  status     String   @default("pending") // "pending", "accepted", "rejected", "blocked"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([senderId, receiverId]) // Empêcher doublons de demandes
+  @@index([senderId])
+  @@index([receiverId])
   @@index([status])
 }
 

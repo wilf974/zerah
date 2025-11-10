@@ -67,7 +67,14 @@
 
 ### Phase 4 : Social & Communauté
 - [x] Partage de succès sur réseaux sociaux
-- [ ] Système d'amis
+- [x] **Système d'amis** ✅
+  - [x] Modèle Prisma Friendship (senderId, receiverId, status)
+  - [x] Migration 0004_add_friendship
+  - [x] API `/api/friends` (GET, POST, PATCH, DELETE)
+  - [x] API `/api/friends/search` pour recherche d'utilisateurs
+  - [x] Page `/friends` avec onglets (Mes amis, Demandes, Rechercher)
+  - [x] Composant UI complet avec recherche, gestion des demandes
+  - [x] Intégration dans la navigation (desktop + mobile)
 - [ ] Défis entre utilisateurs
 - [ ] Tableau de classement (leaderboard)
 - [ ] Forums/discussions par habitude
@@ -127,11 +134,14 @@ _Aucun bug signalé pour le moment_
 
 ---
 
-**Dernière mise à jour** : 27 octobre 2025 - Phase 4 : Partage sur Réseaux Sociaux ✅
-- ✅ Intégration react-share pour 6 réseaux sociaux (Twitter, Facebook, LinkedIn, WhatsApp, Telegram, Email)
-- ✅ Composant ShareModal avec UI moderne et responsive
-- ✅ Bouton de partage dans HabitStatsModal
-- ✅ Messages personnalisés par réseau social
-- ✅ Copie du lien de partage
-- ✅ Support du dark mode complet
+**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Système d'Amis ✅
+- ✅ Table Friendship avec relations bidirectionnelles
+- ✅ Migration Prisma 0004_add_friendship
+- ✅ APIs complètes pour gérer les amis (création, acceptation, refus, suppression)
+- ✅ API de recherche d'utilisateurs avec exclusion des amis existants
+- ✅ Page /friends avec interface à onglets (Mes amis, Demandes, Rechercher)
+- ✅ Gestion des demandes reçues et envoyées
+- ✅ Badge de notification pour les demandes en attente
+- ✅ Support complet du dark mode
+- ✅ Navigation intégrée (desktop + mobile)
 
