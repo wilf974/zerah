@@ -86,7 +86,15 @@
   - [x] Suivi des progrès en temps réel
   - [x] Modal détaillé avec classement des participants
   - [x] Intégration dans la navigation
-- [ ] Tableau de classement (leaderboard)
+- [x] **Tableau de classement (leaderboard)** ✅
+  - [x] API `/api/leaderboard` avec calcul des scores
+  - [x] Métriques : habits actives, taux complétion, streak, total completions
+  - [x] Filtres temporels (semaine, mois, tout temps)
+  - [x] Page `/leaderboard` avec podium top 3
+  - [x] Liste complète avec scores et rangs
+  - [x] Mise en évidence de l'utilisateur connecté
+  - [x] Support du dark mode
+  - [x] Intégration dans la navigation
 - [ ] Forums/discussions par habitude
 
 ### Phase 5 : Notifications
@@ -144,15 +152,17 @@ _Aucun bug signalé pour le moment_
 
 ---
 
-**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Système de Défis ✅
-- ✅ Tables Challenge et ChallengeParticipant avec relations complètes
-- ✅ Migration Prisma 0005_add_challenges
-- ✅ APIs complètes pour créer, gérer et synchroniser les défis
-- ✅ Système d'invitation entre amis avec acceptation/refus
-- ✅ Suivi automatique des progrès basé sur HabitEntry
-- ✅ Page /challenges avec interface à 3 onglets
-- ✅ Modal détaillé avec classement des participants en temps réel
-- ✅ Synchronisation des progrès et détection automatique de completion
+**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Tableau de Classement ✅
+- ✅ API /api/leaderboard avec système de scoring avancé
+- ✅ Calcul des métriques : habits actives, taux de complétion, streak, total completions
+- ✅ Algorithme de score : (completions × 10) + (taux × 5) + (streak × 20)
+- ✅ Filtres temporels dynamiques (semaine, mois, tout temps)
+- ✅ Page /leaderboard avec podium animé pour le top 3
+- ✅ Cartes distinctives (or, argent, bronze) avec gradient
+- ✅ Liste complète avec rangs et statistiques détaillées
+- ✅ Mise en évidence automatique de l'utilisateur connecté
+- ✅ Badge "Vous" pour identification rapide
+- ✅ Explication du système de scoring
 - ✅ Support complet du dark mode
 - ✅ Navigation intégrée (desktop + mobile)
 
