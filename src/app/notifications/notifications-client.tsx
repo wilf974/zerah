@@ -87,37 +87,37 @@ export default function NotificationsClient() {
   if (!preferences) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-4 sm:py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Notifications</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Notifications</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
               Configurez vos préférences de notifications
             </p>
           </div>
           <Link
             href="/dashboard"
-            className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+            className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm sm:text-base whitespace-nowrap"
           >
             ← Retour
           </Link>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 space-y-6 sm:space-y-8">
           {/* Global Settings */}
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Paramètres généraux
             </h2>
-            <div className="space-y-4">
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+            <div className="space-y-3 sm:space-y-4">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Activer les notifications email
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Recevoir des emails de notification
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.emailEnabled}
                   onChange={(e) => updatePreference('emailEnabled', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
             </div>
@@ -133,18 +133,18 @@ export default function NotificationsClient() {
 
           {/* Daily & Periodic Reminders */}
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Rappels périodiques
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Daily Reminder */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <label className="flex items-center justify-between mb-2">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+              <div className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <label className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-3 sm:gap-0">
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                       Rappel quotidien
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       Recevoir un email chaque jour
                     </div>
                   </div>
@@ -152,32 +152,32 @@ export default function NotificationsClient() {
                     type="checkbox"
                     checked={preferences.dailyReminder}
                     onChange={(e) => updatePreference('dailyReminder', e.target.checked)}
-                    className="w-5 h-5 text-blue-500"
+                    className="w-5 h-5 text-blue-500 flex-shrink-0"
                   />
                 </label>
                 {preferences.dailyReminder && (
                   <div className="mt-3">
-                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-xs sm:text-sm text-gray-700 dark:text-gray-300 mb-1">
                       Heure du rappel
                     </label>
                     <input
                       type="time"
                       value={preferences.dailyReminderTime}
                       onChange={(e) => updatePreference('dailyReminderTime', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                     />
                   </div>
                 )}
               </div>
 
               {/* Weekly Digest */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <label className="flex items-center justify-between mb-2">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+              <div className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <label className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-3 sm:gap-0">
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                       Résumé hebdomadaire
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       Recevoir un résumé chaque semaine
                     </div>
                   </div>
@@ -185,18 +185,18 @@ export default function NotificationsClient() {
                     type="checkbox"
                     checked={preferences.weeklyDigest}
                     onChange={(e) => updatePreference('weeklyDigest', e.target.checked)}
-                    className="w-5 h-5 text-blue-500"
+                    className="w-5 h-5 text-blue-500 flex-shrink-0"
                   />
                 </label>
                 {preferences.weeklyDigest && (
                   <div className="mt-3">
-                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-xs sm:text-sm text-gray-700 dark:text-gray-300 mb-1">
                       Jour de la semaine
                     </label>
                     <select
                       value={preferences.weeklyDigestDay}
                       onChange={(e) => updatePreference('weeklyDigestDay', parseInt(e.target.value))}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                     >
                       <option value={1}>Lundi</option>
                       <option value={2}>Mardi</option>
@@ -211,13 +211,13 @@ export default function NotificationsClient() {
               </div>
 
               {/* Monthly Digest */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <label className="flex items-center justify-between mb-2">
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">
+              <div className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <label className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-3 sm:gap-0">
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                       Résumé mensuel
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                       Recevoir un résumé chaque mois
                     </div>
                   </div>
@@ -225,12 +225,12 @@ export default function NotificationsClient() {
                     type="checkbox"
                     checked={preferences.monthlyDigest}
                     onChange={(e) => updatePreference('monthlyDigest', e.target.checked)}
-                    className="w-5 h-5 text-blue-500"
+                    className="w-5 h-5 text-blue-500 flex-shrink-0"
                   />
                 </label>
                 {preferences.monthlyDigest && (
                   <div className="mt-3">
-                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-xs sm:text-sm text-gray-700 dark:text-gray-300 mb-1">
                       Jour du mois (1-28)
                     </label>
                     <input
@@ -239,7 +239,7 @@ export default function NotificationsClient() {
                       max="28"
                       value={preferences.monthlyDigestDay}
                       onChange={(e) => updatePreference('monthlyDigestDay', parseInt(e.target.value))}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                     />
                   </div>
                 )}
@@ -249,16 +249,16 @@ export default function NotificationsClient() {
 
           {/* Notification Types */}
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Types de notifications
             </h2>
-            <div className="space-y-3">
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+            <div className="space-y-2 sm:space-y-3">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Rappels d&apos;habitudes
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Rappels pour compléter vos habitudes
                   </div>
                 </div>
@@ -266,16 +266,16 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.habitReminders}
                   onChange={(e) => updatePreference('habitReminders', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Demandes d&apos;amis
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Nouvelles demandes d&apos;amitié
                   </div>
                 </div>
@@ -283,16 +283,16 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.friendRequests}
                   onChange={(e) => updatePreference('friendRequests', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Invitations aux défis
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Invitations à participer à des défis
                   </div>
                 </div>
@@ -300,16 +300,16 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.challengeInvites}
                   onChange={(e) => updatePreference('challengeInvites', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Mises à jour des défis
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Progrès et résultats des défis
                   </div>
                 </div>
@@ -317,16 +317,16 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.challengeUpdates}
                   onChange={(e) => updatePreference('challengeUpdates', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Réponses aux discussions
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Commentaires et réponses dans les forums
                   </div>
                 </div>
@@ -334,16 +334,16 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.discussionReplies}
                   onChange={(e) => updatePreference('discussionReplies', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <div>
-                  <div className="font-medium text-gray-900 dark:text-white">
+              <label className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-3 sm:gap-0">
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">
                     Succès et récompenses
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Badges et accomplissements
                   </div>
                 </div>
@@ -351,7 +351,7 @@ export default function NotificationsClient() {
                   type="checkbox"
                   checked={preferences.achievements}
                   onChange={(e) => updatePreference('achievements', e.target.checked)}
-                  className="w-5 h-5 text-blue-500"
+                  className="w-5 h-5 text-blue-500 flex-shrink-0"
                 />
               </label>
             </div>
@@ -362,7 +362,7 @@ export default function NotificationsClient() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             >
               {saving ? 'Enregistrement...' : 'Enregistrer les préférences'}
             </button>
