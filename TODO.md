@@ -75,7 +75,17 @@
   - [x] Page `/friends` avec onglets (Mes amis, Demandes, Rechercher)
   - [x] Composant UI complet avec recherche, gestion des demandes
   - [x] Intégration dans la navigation (desktop + mobile)
-- [ ] Défis entre utilisateurs
+- [x] **Défis entre utilisateurs** ✅
+  - [x] Modèle Prisma Challenge et ChallengeParticipant
+  - [x] Migration 0005_add_challenges
+  - [x] API `/api/challenges` (GET, POST)
+  - [x] API `/api/challenges/[id]` (GET, PATCH, DELETE)
+  - [x] API `/api/challenges/[id]/sync-progress` pour synchroniser automatiquement
+  - [x] Page `/challenges` avec onglets (Mes Défis, Créés par moi, Créer)
+  - [x] Système d'invitation et acceptation
+  - [x] Suivi des progrès en temps réel
+  - [x] Modal détaillé avec classement des participants
+  - [x] Intégration dans la navigation
 - [ ] Tableau de classement (leaderboard)
 - [ ] Forums/discussions par habitude
 
@@ -134,14 +144,15 @@ _Aucun bug signalé pour le moment_
 
 ---
 
-**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Système d'Amis ✅
-- ✅ Table Friendship avec relations bidirectionnelles
-- ✅ Migration Prisma 0004_add_friendship
-- ✅ APIs complètes pour gérer les amis (création, acceptation, refus, suppression)
-- ✅ API de recherche d'utilisateurs avec exclusion des amis existants
-- ✅ Page /friends avec interface à onglets (Mes amis, Demandes, Rechercher)
-- ✅ Gestion des demandes reçues et envoyées
-- ✅ Badge de notification pour les demandes en attente
+**Dernière mise à jour** : 10 novembre 2025 - Phase 4 : Système de Défis ✅
+- ✅ Tables Challenge et ChallengeParticipant avec relations complètes
+- ✅ Migration Prisma 0005_add_challenges
+- ✅ APIs complètes pour créer, gérer et synchroniser les défis
+- ✅ Système d'invitation entre amis avec acceptation/refus
+- ✅ Suivi automatique des progrès basé sur HabitEntry
+- ✅ Page /challenges avec interface à 3 onglets
+- ✅ Modal détaillé avec classement des participants en temps réel
+- ✅ Synchronisation des progrès et détection automatique de completion
 - ✅ Support complet du dark mode
 - ✅ Navigation intégrée (desktop + mobile)
 

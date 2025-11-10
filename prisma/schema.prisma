@@ -44,6 +44,10 @@ model User {
   // Friends System
   friendshipsAsSender   Friendship[] @relation("FriendshipSender")
   friendshipsAsReceiver Friendship[] @relation("FriendshipReceiver")
+
+  // Challenges System
+  createdChallenges     Challenge[] @relation("ChallengeCreator")
+  challengeParticipants ChallengeParticipant[]
 }
 
 model OTPCode {
@@ -87,6 +91,7 @@ model Habit {
   
   entries     HabitEntry[]
   details     HabitDetail[] // Champs personnalisés (ml, durée, etc.)
+  challenges  Challenge[] // Défis liés à cette habitude
 }
 
 model HabitDetail {
@@ -157,6 +162,49 @@ model Friendship {
   @@unique([senderId, receiverId]) // Empêcher doublons de demandes
   @@index([senderId])
   @@index([receiverId])
+  @@index([status])
+}
+
+model Challenge {
+  id                Int      @id @default(autoincrement())
+  creatorId         Int
+  creator           User     @relation("ChallengeCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  habitId           Int
+  habit             Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  name              String   // Nom du défi
+  description       String?  // Description optionnelle
+  startDate         DateTime @db.Date
+  endDate           DateTime @db.Date
+  targetCompletions Int      // Nombre de jours/completions requis pour réussir
+  status            String   @default("pending") // "pending", "active", "completed", "cancelled"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  participants      ChallengeParticipant[]
+
+  @@index([creatorId])
+  @@index([habitId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model ChallengeParticipant {
+  id              Int       @id @default(autoincrement())
+  challengeId     Int
+  challenge       Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          String    @default("invited") // "invited", "accepted", "declined", "completed", "failed"
+  currentProgress Int       @default(0) // Nombre de jours complétés
+  joinedAt        DateTime? // Date d'acceptation
+  completedAt     DateTime? // Date de completion
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([challengeId, userId]) // Un utilisateur ne peut participer qu'une fois à un défi
+  @@index([challengeId])
+  @@index([userId])
   @@index([status])
 }
 
