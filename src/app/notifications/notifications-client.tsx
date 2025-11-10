@@ -256,7 +256,7 @@ export default function NotificationsClient() {
               <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">
-                    Rappels d'habitudes
+                    Rappels d&apos;habitudes
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Rappels pour compléter vos habitudes
@@ -273,10 +273,10 @@ export default function NotificationsClient() {
               <label className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <div>
                   <div className="font-medium text-gray-900 dark:text-white">
-                    Demandes d'amis
+                    Demandes d&apos;amis
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Nouvelles demandes d'amitié
+                    Nouvelles demandes d&apos;amitié
                   </div>
                 </div>
                 <input
